@@ -1,0 +1,25 @@
+{
+  "name": "videojs-google-chromecast",
+  "version": "1.0.0",
+  "description": "Chromecast plugin for videojs, adapted for v7.*",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mikadoplus/videojs-google-chromecast.git"
+  },
+  "keywords": [
+    "videojs",
+    "chromecast",
+    "video.js",
+    "videojs-plugin"
+  ],
+  "author": "Patrick LJ",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mikadoplus/videojs-google-chromecast/issues"
+  },
+  "homepage": "https://github.com/mikadoplus/videojs-google-chromecast#readme"
+}
