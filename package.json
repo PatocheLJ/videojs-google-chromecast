@@ -18,17 +18,12 @@
     "build:js": "rollup -c scripts/rollup.config.js",
     "clean": "shx rm -rf ./dist ./test/dist",
     "postclean": "shx mkdir -p ./dist ./test/dist",
-    "docs": "npm-run-all docs:*",
-    "docs:api": "jsdoc src -g plugins/markdown -r -d docs/api",
-    "docs:toc": "doctoc --notitle README.md",
-    "lint": "vjsstandard",
     "server": "karma start scripts/karma.conf.js --singleRun=false --auto-watch",
     "start": "npm-run-all -p server watch",
     "pretest": "npm-run-all lint build",
     "test": "npm-run-all test:*",
     "posttest": "shx cat test/dist/coverage/text.txt",
     "test:unit": "karma start scripts/karma.conf.js",
-    "test:verify": "vjsverify --verbose",
     "update-changelog": "conventional-changelog -p videojs -i CHANGELOG.md -s",
     "preversion": "npm test",
     "version": "is-prerelease || npm run update-changelog && git add CHANGELOG.md",
@@ -69,13 +64,11 @@
   ],
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged",
       "pre-push": "npm run test"
     }
   },
   "lint-staged": {
     "*.js": [
-      "vjsstandard --fix",
       "git add"
     ],
     "README.md": [
@@ -97,7 +90,6 @@
     "acorn": "^7.2.0",
     "core-js": "^3.6.5",
     "fsevents": "^2.1.3",
-    "jsdoc": "^3.6.4",
     "karma": "^4.4.1",
     "node-sass": "^4.14.1",
     "nyc": "^15.0.1",
