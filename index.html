@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+<head data-cast-api-enabled="true">
+  <meta charset="utf-8">
+  <title>videojs-google-chromecast Demo</title>
+  <link href="node_modules/video.js/dist/video-js.css" rel="stylesheet">
+  <link href="dist/plugin.css" rel="stylesheet">
+  <script src="//www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1"></script>
+</head>
+<body>
+  <video id="videojs-google-chromecast-player" class="video-js vjs-default-skin" controls>
+    <source src="https://vjs.zencdn.net/v/oceans.mp4" type='video/mp4'>
+    <source src="https://vjs.zencdn.net/v/oceans.webm" type='video/webm'>
+  </video>
+  <ul>
+    <li><a href="test/debug.html">Run unit tests in browser.</a></li>
+    <li><a href="docs/api/">Read generated docs.</a></li>
+  </ul>
+  <script src="node_modules/video.js/dist/video.js"></script>
+  <script src="dist/videojs-google-chromecast.js"></script>
+  <script>
+    (function(window, videojs) {
+      var player = videojs('videojs-google-chromecast-player', {
+          plugins: {
+              chromecast: true
+          }
+      });
+    }(window, window.videojs));
+  </script>
+</body>
+</html>
