@@ -3,37 +3,26 @@
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-var videojs$1 = _interopDefault(require('video.js'));
-var _assertThisInitialized = _interopDefault(require('@babel/runtime/helpers/assertThisInitialized'));
-var _inheritsLoose = _interopDefault(require('@babel/runtime/helpers/inheritsLoose'));
+var videojs = _interopDefault(require('video.js'));
 
 var version = "0.0.1";
 
-/**
- * @file chromecast-button.js
- */
-var registerComponent = videojs.registerComponent || videojs.component;
+var registerComponent = videojs.registerComponent;
 var getComponent = videojs.getComponent;
 var ControlBar = getComponent('ControlBar');
-var Component = getComponent('Component');
 var Button = getComponent('Button');
 var hasReceiver = false;
-
-var ChromecastButton = /*#__PURE__*/function (_Button) {
-  _inheritsLoose(ChromecastButton, _Button);
-
-  function ChromecastButton(player, options) {
-    var _this;
+var ChromecastButton = videojs.extend(Button, {
+  constructor: function constructor(player, options) {
+    var _this = this;
 
     if (options === void 0) {
       options = {};
     }
 
-    _this = _Button.call(this, player, options) || this;
-
-    _this.hide();
-
-    _this.initializeApi();
+    Button.apply(this, arguments);
+    this.hide();
+    this.initializeApi();
 
     if (player.options_.chromecast === undefined) {
       player.options_.chromecast = {};
@@ -41,30 +30,22 @@ var ChromecastButton = /*#__PURE__*/function (_Button) {
     }
 
     options.appId = player.options_.chromecast.appId;
-    player.chromecast = _assertThisInitialized(_this);
-
-    _this.on(player, 'loadstart', function () {
+    player.chromecast = this;
+    this.on(player, 'loadstart', function () {
       if (_this.casting && _this.apiInitialized) {
         _this.onSessionSuccess(_this.apiSession);
       }
     });
-
-    _this.on(player, 'dispose', function () {
+    this.on(player, 'dispose', function () {
       if (_this.casting && _this.apiSession) {
         _this.apiSession.stop(null, null);
       }
     });
-
-    return _this;
-  }
-
-  var _proto = ChromecastButton.prototype;
-
-  _proto.buildCSSClass = function buildCSSClass() {
-    return "vjs-chromecast-button " + _Button.prototype.buildCSSClass.call(this);
-  };
-
-  _proto.initializeApi = function initializeApi() {
+  },
+  buildCSSClass: function buildCSSClass() {
+    return "vjs-chromecast-button " + Button.prototype.buildCSSClass.call(this);
+  },
+  initializeApi: function initializeApi() {
     var apiConfig;
     var appId;
     var sessionRequest;
@@ -92,9 +73,8 @@ var ChromecastButton = /*#__PURE__*/function (_Button) {
     sessionRequest = new chrome.cast.SessionRequest(appId);
     apiConfig = new chrome.cast.ApiConfig(sessionRequest, this.sessionJoinedListener.bind(this), this.receiverListener.bind(this));
     return chrome.cast.initialize(apiConfig, this.onInitSuccess.bind(this), this.castError.bind(this));
-  };
-
-  _proto.castError = function castError(_castError) {
+  },
+  castError: function castError(_castError) {
     var error = {
       code: _castError.code,
       message: _castError.description
@@ -122,9 +102,8 @@ var ChromecastButton = /*#__PURE__*/function (_Button) {
     }
 
     return videojs.log('Cast Error: ' + JSON.stringify(_castError));
-  };
-
-  _proto.onInitSuccess = function onInitSuccess() {
+  },
+  onInitSuccess: function onInitSuccess() {
     if (hasReceiver) {
       this.show();
     } else {
@@ -132,18 +111,16 @@ var ChromecastButton = /*#__PURE__*/function (_Button) {
     }
 
     return this.apiInitialized = true;
-  };
-
-  _proto.sessionJoinedListener = function sessionJoinedListener(session) {
+  },
+  sessionJoinedListener: function sessionJoinedListener(session) {
     if (session.media.length) {
       this.apiSession = session;
       this.onMediaDiscovered(session.media[0]);
     }
 
     return console.log('Session joined');
-  };
-
-  _proto.receiverListener = function receiverListener(availability) {
+  },
+  receiverListener: function receiverListener(availability) {
     if (availability === 'available') {
       hasReceiver = true;
       return this.show();
@@ -151,9 +128,8 @@ var ChromecastButton = /*#__PURE__*/function (_Button) {
 
     hasReceiver = false;
     return this.hide();
-  };
-
-  _proto.doLaunch = function doLaunch() {
+  },
+  doLaunch: function doLaunch() {
     videojs.log('Cast video: ' + this.player_.cache_.src);
 
     if (this.apiInitialized) {
@@ -161,9 +137,8 @@ var ChromecastButton = /*#__PURE__*/function (_Button) {
     }
 
     return videojs.log('Session not initialized');
-  };
-
-  _proto.onSessionSuccess = function onSessionSuccess(session) {
+  },
+  onSessionSuccess: function onSessionSuccess(session) {
     var image;
     var key;
     var loadRequest;
@@ -259,9 +234,8 @@ var ChromecastButton = /*#__PURE__*/function (_Button) {
     loadRequest.currentTime = this.player_.currentTime();
     this.apiSession.loadMedia(loadRequest, this.onMediaDiscovered.bind(this), this.castError.bind(this));
     this.apiSession.addUpdateListener(this.onSessionUpdate.bind(this));
-  };
-
-  _proto.onMediaDiscovered = function onMediaDiscovered(media) {
+  },
+  onMediaDiscovered: function onMediaDiscovered(media) {
     this.player_.loadTech_('chromecast', {
       type: 'cast',
       apiMedia: media,
@@ -273,9 +247,8 @@ var ChromecastButton = /*#__PURE__*/function (_Button) {
     this.player_.userActive(true);
     this.addClass('connected');
     this.removeClass('error');
-  };
-
-  _proto.onSessionUpdate = function onSessionUpdate(isAlive) {
+  },
+  onSessionUpdate: function onSessionUpdate(isAlive) {
     if (!this.player_.apiMedia) {
       return;
     }
@@ -283,13 +256,11 @@ var ChromecastButton = /*#__PURE__*/function (_Button) {
     if (!isAlive) {
       return this.onStopAppSuccess();
     }
-  };
-
-  _proto.stopCasting = function stopCasting() {
+  },
+  stopCasting: function stopCasting() {
     return this.apiSession.stop(this.onStopAppSuccess.bind(this), this.castError.bind(this));
-  };
-
-  _proto.onStopAppSuccess = function onStopAppSuccess() {
+  },
+  onStopAppSuccess: function onStopAppSuccess() {
     this.casting = false;
     var time = this.player_.currentTime();
     this.removeClass('connected');
@@ -304,36 +275,29 @@ var ChromecastButton = /*#__PURE__*/function (_Button) {
     this.player_.currentTime(time);
     this.player_.options_.inactivityTimeout = this.inactivityTimeout;
     return this.apiSession = null;
-  };
-
-  _proto.handleClick = function handleClick() {
-    _Button.prototype.handleClick.call(this);
+  },
+  handleClick: function handleClick() {
+    Button.prototype.handleClick.call(this);
 
     if (this.casting) {
       return this.stopCasting();
     }
 
     return this.doLaunch();
-  };
-
-  return ChromecastButton;
-}(Button);
-
+  }
+});
 ChromecastButton.prototype.tryingReconnect = 0;
 ChromecastButton.prototype.inactivityTimeout = 2000;
 ChromecastButton.prototype.controlText_ = 'Chromecast';
 ControlBar.prototype.options_.children.splice(ControlBar.prototype.options_.children.length - 2, 0, 'chromecastButton');
 
 if (typeof getComponent('ChromecastButton') === 'undefined') {
-  Component.registerComponent('ChromecastButton', ChromecastButton);
+  registerComponent('ChromecastButton', ChromecastButton);
 }
 
-/**
- * @file chromecast-tech.js
- * ChromeCastTech Media Controller - Wrapper for HTML5 Media API
- */
 var getTech = videojs.getTech;
 var registerTech = videojs.registerTech;
+var Tech = getTech('Tech');
 /**
  * Chromecast Media Controller - Wrapper for HTML5 Media API
  *
@@ -343,11 +307,11 @@ var registerTech = videojs.registerTech;
  * @class ChromecastTech
  */
 
-var ChromecastTech = videojs.extend(getTech('Tech'), {
+var ChromecastTech = videojs.extend(Tech, {
   constructor: function constructor(options, ready) {
     var _this = this;
 
-    getTech('Tech').apply(this, arguments);
+    Tech.apply(this, arguments);
     this.apiMedia = this.options_.source.apiMedia;
     this.apiSession = this.options_.source.apiSession;
     this.receiver = this.apiSession.receiver.friendlyName;
@@ -629,7 +593,7 @@ var ChromecastTech = videojs.extend(getTech('Tech'), {
   },
   dispose: function dispose() {
     this.resetSrc_(Function.prototype);
-    getTech('Tech').dispose(this);
+    Tech.prototype.dispose.call(this);
   },
   seeking: function seeking() {
     return false;
@@ -650,7 +614,7 @@ ChromecastTech.isSupported = function () {
 }; // Add Source Handler pattern functions to this tech
 
 
-getTech('Tech').withSourceHandlers(ChromecastTech);
+Tech.withSourceHandlers(ChromecastTech);
 /*
  * The default native source handler.
  * This simply passes the source to the video element. Nothing fancy.
@@ -788,11 +752,12 @@ if (typeof getTech('ChromecastTech') === 'undefined') {
   registerTech('chromecast', ChromecastTech);
 }
 
-var registerComponent$1 = videojs.registerComponent || videojs.component;
+var registerComponent$1 = videojs.registerComponent;
 var getComponent$1 = videojs.getComponent;
-var GoogleChromecast = videojs.extend(getComponent$1('Component'), {
+var Component = getComponent$1('Component');
+var GoogleChromecast = videojs.extend(Component, {
   constructor: function constructor(player, options) {
-    getComponent$1('Component').apply(this, arguments);
+    Component.apply(this, arguments);
   }
 });
 GoogleChromecast.prototype.options_ = {};
@@ -805,10 +770,8 @@ if (typeof getComponent$1('GoogleChromecast') === 'undefined') {
   registerComponent$1('GoogleChromecast', GoogleChromecast);
 }
 
-var registerPlugin = videojs$1.registerPlugin || videojs$1.plugin;
-var getPlugin = videojs$1.getPlugin || videojs$1.plugin;
-var registerComponent$2 = videojs$1.registerPlugin;
-var getComponent$2 = videojs$1.getComponent;
+var registerPlugin = videojs.registerPlugin || videojs.plugin;
+var getPlugin = videojs.getPlugin || videojs.plugin;
 /**
  * Google Chromecast for VideoJS
  *

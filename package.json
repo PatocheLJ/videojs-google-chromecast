@@ -1,5 +1,6 @@
 {
   "name": "videojs-google-chromecast",
+  "homepage": "https://github.com/mikadoplus/videojs-google-chromecast",
   "version": "0.0.1",
   "description": "Chromecast plugin for videojs, adapted for v7.*",
   "main": "dist/videojs-google-chromecast.cjs.js",
@@ -7,35 +8,33 @@
   "generator-videojs-plugin": {
     "version": "7.6.3"
   },
-  "browserslist": [
-    "defaults",
-    "ie 11"
-  ],
   "scripts": {
     "prebuild": "npm run clean",
     "build": "npm-run-all -p build:*",
     "build:css": "node-sass --include-path src --output-style compressed src/css/plugin.scss -o dist",
-    "build:js": "rollup -c scripts/rollup.config.js",
-    "clean": "shx rm -rf ./dist ./test/dist",
-    "postclean": "shx mkdir -p ./dist ./test/dist",
-    "server": "karma start scripts/karma.conf.js --singleRun=false --auto-watch",
-    "start": "npm-run-all -p server watch",
-    "pretest": "npm-run-all build",
-    "test": "npm-run-all",
-    "update-changelog": "conventional-changelog -p videojs -i CHANGELOG.md -s",
-    "version": "is-prerelease || npm run update-changelog && git add CHANGELOG.md",
+    "build:js": "npm-run-all build:js:rollup build:js:bannerize build:js:uglify",
+    "build:js:bannerize": "bannerize dist/videojs-google-chromecast.js --banner=scripts/banner.ejs",
+    "build:js:rollup": "rollup -c scripts/rollup.config.js",
+    "build:js:uglify": "uglifyjs dist/videojs-google-chromecast.js --comments --mangle --compress  -o dist/videojs-google-chromecast.min.js",
+    "clean": "rimraf dist test/dist",
+    "postclean": "mkdirp dist test/dist",
+    "lint": "vjsstandard",
+    "start": "npm-run-all -p start:server watch",
+    "start:server": "static -a 0.0.0.0 -p 9999 -H '{\"Cache-Control\": \"no-cache, must-revalidate\"}' .",
+    "pretest": "npm-run-all lint build",
+    "test": "karma start test/karma.conf.js",
+    "preversion": "npm run test",
+    "version": "node scripts/version.js",
     "watch": "npm-run-all -p watch:*",
-    "watch:css": "npm run build:css -- -w",
-    "watch:js": "npm run build:js -- -w",
-    "prepublishOnly": "npm-run-all build"
-  },
-  "engines": {
-    "node": ">=8",
-    "npm": ">=5"
+    "watch:css": "nodemon -e scss -x \"npm run build:css\"",
+    "watch:js": "rollup -c scripts/rollup.config.js -w",
+    "prepare": "npm run build",
+    "prepush": "npm run test"
   },
   "keywords": [
     "videojs",
-    "videojs-plugin"
+    "videojs-plugin",
+    "chromecast"
   ],
   "repository": {
     "type": "git",
@@ -43,6 +42,15 @@
   },
   "author": "mikadoplus <plo@mikadoplus.lu>",
   "license": "UNLICENSED",
+  "vjsstandard": {
+    "ignore": [
+      "dist",
+      "docs",
+      "test/dist",
+      "examples",
+      "test/karma.conf.js"
+    ]
+  },
   "files": [
     "CONTRIBUTING.md",
     "dist/",
@@ -52,16 +60,14 @@
     "src/",
     "test/"
   ],
-  "husky": {
-    "hooks": {
-      "pre-push": "npm run test"
-    }
-  },
   "dependencies": {
     "global": "^4.4.0",
     "video.js": "^7.7.6"
   },
   "devDependencies": {
+    "@babel/plugin-transform-object-assign": "^7.8.3",
+    "@babel/plugin-transform-runtime": "^7.9.6",
+    "@babel/preset-env": "^7.9.6",
     "@rollup/plugin-babel": "^5.0.0",
     "@rollup/plugin-commonjs": "^11.1.0",
     "@rollup/plugin-json": "^4.0.3",
@@ -69,17 +75,35 @@
     "@rollup/plugin-node-resolve": "^7.1.3",
     "@videojs/generator-helpers": "^1.1.0",
     "acorn": "^7.2.0",
+    "babel-plugin-external-helpers": "^6.22.0",
+    "babel-plugin-transform-object-assign": "^6.22.0",
+    "bannerize": "^1.1.4",
+    "conventional-changelog-cli": "^2.0.34",
+    "conventional-changelog-videojs": "^3.0.0",
     "core-js": "^3.6.5",
     "fsevents": "^2.1.3",
+    "husky": "^4.2.5",
     "karma": "^4.4.1",
+    "mkdirp": "^1.0.4",
     "node-sass": "^4.14.1",
+    "node-static": "^0.7.11",
+    "nodemon": "^2.0.3",
+    "npm-run-all": "^4.1.5",
     "nyc": "^15.0.1",
     "postcss-cli": "^7.1.1",
     "postcss-scss": "^2.0.0",
+    "rimraf": "^3.0.2",
     "rollup": "^1.32.1",
+    "semver": "^7.3.2",
     "sinon": "^9.0.2",
     "videojs-generate-karma-config": "^5.3.1",
     "videojs-generate-rollup-config": "^5.0.2",
     "videojs-standard": "^8.0.4"
+  },
+  "eslintConfig": {
+    "env": {
+      "browser": true,
+      "node": true
+    }
   }
 }

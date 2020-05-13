@@ -1,17 +1,15 @@
-/**
- * @file chromecast-button.js
- */
-const registerComponent = videojs.registerComponent || videojs.component;
+import videojs from 'video.js';
+
+const registerComponent = videojs.registerComponent;
 const getComponent = videojs.getComponent;
 const ControlBar = getComponent('ControlBar');
-const Component = getComponent('Component');
 const Button = getComponent('Button');
 
 let hasReceiver = false;
 
-class ChromecastButton extends Button {
+const ChromecastButton = videojs.extend(Button, {
   constructor(player, options = {}) {
-    super(player, options);
+    Button.apply(this, arguments);
     this.hide();
     this.initializeApi();
     if (player.options_.chromecast === undefined) {
@@ -32,11 +30,11 @@ class ChromecastButton extends Button {
         this.apiSession.stop(null, null);
       }
     });
-  }
+  },
 
   buildCSSClass() {
-    return `vjs-chromecast-button ${super.buildCSSClass()}`;
-  }
+    return `vjs-chromecast-button ${Button.prototype.buildCSSClass.call(this)}`;
+  },
 
   initializeApi() {
     let apiConfig;
@@ -64,7 +62,7 @@ class ChromecastButton extends Button {
     sessionRequest = new chrome.cast.SessionRequest(appId);
     apiConfig = new chrome.cast.ApiConfig(sessionRequest, this.sessionJoinedListener.bind(this), this.receiverListener.bind(this));
     return chrome.cast.initialize(apiConfig, this.onInitSuccess.bind(this), this.castError.bind(this));
-  }
+  },
 
   castError(castError) {
 
@@ -92,7 +90,7 @@ class ChromecastButton extends Button {
       break;
     }
     return videojs.log('Cast Error: ' + (JSON.stringify(castError)));
-  }
+  },
 
   onInitSuccess() {
     if (hasReceiver) {
@@ -101,7 +99,7 @@ class ChromecastButton extends Button {
       this.hide();
     }
     return this.apiInitialized = true;
-  }
+  },
 
   sessionJoinedListener(session) {
     if (session.media.length) {
@@ -109,7 +107,7 @@ class ChromecastButton extends Button {
       this.onMediaDiscovered(session.media[0]);
     }
     return console.log('Session joined');
-  }
+  },
 
   receiverListener(availability) {
     if (availability === 'available') {
@@ -118,8 +116,7 @@ class ChromecastButton extends Button {
     }
     hasReceiver = false;
     return this.hide();
-
-  }
+  },
 
   doLaunch() {
     videojs.log('Cast video: ' + (this.player_.cache_.src));
@@ -127,8 +124,7 @@ class ChromecastButton extends Button {
       return chrome.cast.requestSession(this.onSessionSuccess.bind(this), this.castError.bind(this));
     }
     return videojs.log('Session not initialized');
-
-  }
+  },
 
   onSessionSuccess(session) {
     let image;
@@ -227,7 +223,7 @@ class ChromecastButton extends Button {
 
     this.apiSession.loadMedia(loadRequest, this.onMediaDiscovered.bind(this), this.castError.bind(this));
     this.apiSession.addUpdateListener(this.onSessionUpdate.bind(this));
-  }
+  },
 
   onMediaDiscovered(media) {
     this.player_.loadTech_('chromecast', {
@@ -242,7 +238,7 @@ class ChromecastButton extends Button {
     this.player_.userActive(true);
     this.addClass('connected');
     this.removeClass('error');
-  }
+  },
 
   onSessionUpdate(isAlive) {
     if (!this.player_.apiMedia) {
@@ -251,11 +247,11 @@ class ChromecastButton extends Button {
     if (!isAlive) {
       return this.onStopAppSuccess();
     }
-  }
+  },
 
   stopCasting() {
     return this.apiSession.stop(this.onStopAppSuccess.bind(this), this.castError.bind(this));
-  }
+  },
 
   onStopAppSuccess() {
     this.casting = false;
@@ -271,17 +267,18 @@ class ChromecastButton extends Button {
     this.player_.currentTime(time);
     this.player_.options_.inactivityTimeout = this.inactivityTimeout;
     return this.apiSession = null;
-  }
+  },
 
   handleClick() {
-    super.handleClick();
+    Button.prototype.handleClick.call(this);
+
     if (this.casting) {
       return this.stopCasting();
     }
     return this.doLaunch();
 
   }
-}
+});
 
 ChromecastButton.prototype.tryingReconnect = 0;
 
@@ -289,7 +286,9 @@ ChromecastButton.prototype.inactivityTimeout = 2000;
 
 ChromecastButton.prototype.controlText_ = 'Chromecast';
 ControlBar.prototype.options_.children.splice(ControlBar.prototype.options_.children.length - 2, 0, 'chromecastButton');
+
 if (typeof getComponent('ChromecastButton') === 'undefined') {
-  Component.registerComponent('ChromecastButton', ChromecastButton);
+  registerComponent('ChromecastButton', ChromecastButton);
 }
+
 export default ChromecastButton;

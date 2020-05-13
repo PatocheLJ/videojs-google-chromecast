@@ -1,13 +1,15 @@
+import videojs from 'video.js';
+
 import ChromecastButton from './component/control-bar/chromecast-button';
 import ChromecastTech from './tech/chromecast-tech';
 
-// Cross-compatibility for Video.js 5 and 6.
-const registerComponent = videojs.registerComponent || videojs.component;
+const registerComponent = videojs.registerComponent;
 const getComponent = videojs.getComponent;
+const Component = getComponent('Component');
 
-const GoogleChromecast = videojs.extend(getComponent('Component'), {
+const GoogleChromecast = videojs.extend(Component, {
   constructor(player, options) {
-    getComponent('Component').apply(this, arguments);
+      Component.apply(this, arguments);
   }
 });
 

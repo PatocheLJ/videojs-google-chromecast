@@ -1,9 +1,8 @@
-/**
- * @file chromecast-tech.js
- * ChromeCastTech Media Controller - Wrapper for HTML5 Media API
- */
+import videojs from 'video.js';
+
 const getTech = videojs.getTech;
 const registerTech = videojs.registerTech;
+const Tech = getTech('Tech');
 
 /**
  * Chromecast Media Controller - Wrapper for HTML5 Media API
@@ -13,9 +12,9 @@ const registerTech = videojs.registerTech;
  * @extends Tech
  * @class ChromecastTech
  */
-const ChromecastTech = videojs.extend(getTech('Tech'), {
+const ChromecastTech = videojs.extend(Tech, {
   constructor(options, ready) {
-    getTech('Tech').apply(this, arguments);
+    Tech.apply(this, arguments);
 
     this.apiMedia = this.options_.source.apiMedia;
     this.apiSession = this.options_.source.apiSession;
@@ -79,7 +78,6 @@ const ChromecastTech = videojs.extend(getTech('Tech'), {
 
     this.update();
     this.triggerReady();
-
   },
 
   createEl() {
@@ -320,7 +318,7 @@ const ChromecastTech = videojs.extend(getTech('Tech'), {
 
   dispose() {
     this.resetSrc_(Function.prototype);
-    getTech('Tech').dispose(this);
+    Tech.prototype.dispose.call(this);
   },
 
   seeking() {
@@ -347,7 +345,7 @@ ChromecastTech.isSupported = function() {
 };
 
 // Add Source Handler pattern functions to this tech
-getTech('Tech').withSourceHandlers(ChromecastTech);
+Tech.withSourceHandlers(ChromecastTech);
 
 /*
  * The default native source handler.
