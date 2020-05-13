@@ -17,7 +17,7 @@ const getComponent = videojs.getComponent;
  * @param    {Object} [options={}]
  *           An object of options left to the plugin author to define.
  */
-const chromecast = function (options) {
+const chromecast = function(options) {
 
 };
 
