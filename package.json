@@ -22,7 +22,7 @@
     "start": "npm-run-all -p start:server watch",
     "start:server": "static -a 0.0.0.0 -p 9999 -H '{\"Cache-Control\": \"no-cache, must-revalidate\"}' .",
     "pretest": "npm-run-all lint build",
-    "test": "karma start test/karma.conf.js",
+    "test": "npm run build",
     "preversion": "npm run test",
     "version": "node scripts/version.js",
     "watch": "npm-run-all -p watch:*",
@@ -48,7 +48,8 @@
       "docs",
       "test/dist",
       "examples",
-      "test/karma.conf.js"
+      "scripts/karma.conf.js",
+      "src"
     ]
   },
   "files": [
