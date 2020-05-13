@@ -21,7 +21,7 @@
     "server": "karma start scripts/karma.conf.js --singleRun=false --auto-watch",
     "start": "npm-run-all -p server watch",
     "pretest": "npm-run-all build",
-    "test": "npm-run-all test:*",
+    "test": "npm-run-all",
     "posttest": "shx cat test/dist/coverage/text.txt",
     "update-changelog": "conventional-changelog -p videojs -i CHANGELOG.md -s",
     "version": "is-prerelease || npm run update-changelog && git add CHANGELOG.md",
