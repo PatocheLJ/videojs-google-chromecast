@@ -143,10 +143,10 @@ var ChromecastButton = /*#__PURE__*/function (_Button) {
     if (availability === 'available') {
       hasReceiver = true;
       return this.show();
-    } else {
-      hasReceiver = false;
-      return this.hide();
     }
+
+    hasReceiver = false;
+    return this.hide();
   };
 
   _proto.doLaunch = function doLaunch() {
@@ -154,9 +154,9 @@ var ChromecastButton = /*#__PURE__*/function (_Button) {
 
     if (this.apiInitialized) {
       return chrome.cast.requestSession(this.onSessionSuccess.bind(this), this.castError.bind(this));
-    } else {
-      return videojs.log('Session not initialized');
     }
+
+    return videojs.log('Session not initialized');
   };
 
   _proto.onSessionSuccess = function onSessionSuccess(session) {
@@ -187,7 +187,7 @@ var ChromecastButton = /*#__PURE__*/function (_Button) {
         value = ref[key];
         mediaInfo.metadata[key] = value;
       }
-    } //Add poster image on player
+    } // Add poster image on player
 
 
     var poster = this.player().poster();
@@ -289,7 +289,7 @@ var ChromecastButton = /*#__PURE__*/function (_Button) {
     this.casting = false;
     var time = this.player_.currentTime();
     this.removeClass('connected');
-    this.player_.src(this.player_.options_['sources']);
+    this.player_.src(this.player_.options_.sources);
 
     if (!this.player_.paused()) {
       this.player_.one('seeked', function () {
@@ -307,9 +307,9 @@ var ChromecastButton = /*#__PURE__*/function (_Button) {
 
     if (this.casting) {
       return this.stopCasting();
-    } else {
-      return this.doLaunch();
     }
+
+    return this.doLaunch();
   };
 
   return ChromecastButton;
@@ -456,11 +456,11 @@ var ChromecastTech = videojs.extend(getTech('Tech'), {
   },
 
   /**
-   * Set video
-   *
-   * @param {Object=} src Source object
-   * @method setSrc
-   */
+     * Set video
+     *
+     * @param {Object=} src Source object
+     * @method setSrc
+     */
   src: function src(_src) {},
   currentSrc: function currentSrc() {
     if (!this.apiMedia) {
@@ -482,7 +482,7 @@ var ChromecastTech = videojs.extend(getTech('Tech'), {
       var track = tracks[i];
 
       if (track.enabled) {
-        //set id of cuurentTrack audio
+        // set id of cuurentTrack audio
         trackInfo.push(i + 1 + tTracks.length);
       }
     }
@@ -548,7 +548,7 @@ var ChromecastTech = videojs.extend(getTech('Tech'), {
     return this.paused_;
   },
   ended: function ended() {
-    return chrome.cast.media.IdleReason === "FINISHED";
+    return chrome.cast.media.IdleReason === 'FINISHED';
   },
   currentTime: function currentTime() {
     if (!this.apiMedia) {
@@ -564,9 +564,9 @@ var ChromecastTech = videojs.extend(getTech('Tech'), {
 
     var request;
     request = new chrome.cast.media.SeekRequest();
-    request.currentTime = position; //if (this.player_.controlBar.progressControl.seekBar.videoWasPlaying) {
+    request.currentTime = position; // if (this.player_.controlBar.progressControl.seekBar.videoWasPlaying) {
     //  request.resumeState = chrome.cast.media.ResumeState.PLAYBACK_START;
-    //}
+    // }
 
     return this.apiMedia.seek(request, this.onSeekSuccess.bind(this, position), this.castError.bind(this));
   },
@@ -658,8 +658,9 @@ getTech('Tech').withSourceHandlers(ChromecastTech);
 ChromecastTech.nativeSourceHandler = {};
 /**
  * Check if Flash can play the given videotype
- * @param  {String} type    The mimetype to check
- * @return {String}         'probably', 'maybe', or '' (empty string)
+ *
+ * @param  {string} type    The mimetype to check
+ * @return {string}         'probably', 'maybe', or '' (empty string)
  */
 
 ChromecastTech.nativeSourceHandler.canPlayType = function (source) {
@@ -670,9 +671,9 @@ ChromecastTech.nativeSourceHandler.canPlayType = function (source) {
     return 'probably';
   } else if (dashExtRE.test(source)) {
     return 'maybe';
-  } else {
-    return '';
   }
+
+  return '';
 };
 /*
  * Check Flash can handle the source natively
@@ -776,7 +777,7 @@ ChromecastTech.prototype.featuresNativeAudioTracks = true;
  * @type {Boolean}
  */
 
-ChromecastTech.prototype.featuresNativeVideoTracks = false; //videojs.options.chromecast = {};
+ChromecastTech.prototype.featuresNativeVideoTracks = false; // videojs.options.chromecast = {};
 // Register the compnent with video.js, avoid double registration
 
 if (typeof getTech('ChromecastTech') === 'undefined') {
