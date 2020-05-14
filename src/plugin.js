@@ -1,11 +1,7 @@
 import videojs from 'video.js';
 import {version as VERSION} from '../package.json';
 
-import GoogleChromecast from './js/google-chromecast';
-
-// Cross-compatibility for Video.js 5 and 6.
-const registerPlugin = videojs.registerPlugin || videojs.plugin;
-const getPlugin = videojs.getPlugin || videojs.plugin;
+import Chromecast from './js/google-chromecast';
 
 /**
  * Google Chromecast for VideoJS
@@ -14,11 +10,20 @@ const getPlugin = videojs.getPlugin || videojs.plugin;
  * @param    {Object} [options={}]
  *           An object of options left to the plugin author to define.
  */
-const chromecast = function(options) {
+const chromecast = function chromecast(options) {
+    if (options === false || (options && options.enabled === false)) {
+        return;
+    }
+
+    let player = this
+    player.addChild('Chromecast', options)
 };
 
+// Cross-compatibility for Video.js 5 and 6.
+const registerPlugin = videojs.registerPlugin || videojs.plugin;
+
 // Register the plugin with video.js, avoid double registration
-if (typeof getPlugin('chromecast') === 'undefined') {
+if (typeof videojs.getPlugin('chromecast') === 'undefined') {
   registerPlugin('chromecast', chromecast);
 }
 

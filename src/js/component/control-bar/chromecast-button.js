@@ -1,22 +1,22 @@
 import videojs from 'video.js';
 
-const registerComponent = videojs.registerComponent;
-const getComponent = videojs.getComponent;
-const ControlBar = getComponent('ControlBar');
-const Button = getComponent('Button');
-
+const Component = videojs.getComponent('Component');
+const ControlBar = videojs.getComponent('ControlBar');
+const Button = videojs.getComponent('Button');
 let hasReceiver = false;
 
-const ChromecastButton = videojs.extend(Button, {
+class ChromecastButton extends Button {
   constructor(player, options = {}) {
-    Button.apply(this, arguments);
+    const allowedOptions = ["appId", "altSource", "onStop", "onError"];
+    allowedOptions.forEach(opt => {
+        options[opt] = player.options_.chromecast[opt];
+    });
+
+    super(player, options);
     this.hide();
     this.initializeApi();
-    if (player.options_.chromecast === undefined) {
-      player.options_.chromecast = {};
-      player.options_.chromecast.appId = '';
-    }
-    options.appId = player.options_.chromecast.appId;
+    this.source = null;
+    this.tryingReconnect = 0
     player.chromecast = this;
 
     this.on(player, 'loadstart', () => {
@@ -30,11 +30,11 @@ const ChromecastButton = videojs.extend(Button, {
         this.apiSession.stop(null, null);
       }
     });
-  },
+  }
 
   buildCSSClass() {
-    return `vjs-chromecast-button ${Button.prototype.buildCSSClass.call(this)}`;
-  },
+    return `vjs-chromecast-button ${super.buildCSSClass(this)}`;
+  }
 
   initializeApi() {
     let apiConfig;
@@ -50,8 +50,8 @@ const ChromecastButton = videojs.extend(Button, {
     if (!chrome.cast || !chrome.cast.isAvailable) {
       videojs.log('Cast APIs not available');
       if (this.tryingReconnect < 10) {
-        this.setTimeout(this.initializeApi, 1000);
-        ++this.tryingReconnect;
+          this.setTimeout(this.initializeApi, 1000);
+          ++this.tryingReconnect;
       }
       videojs.log('Cast APIs not available. Max reconnect attempt');
       return;
@@ -62,7 +62,7 @@ const ChromecastButton = videojs.extend(Button, {
     sessionRequest = new chrome.cast.SessionRequest(appId);
     apiConfig = new chrome.cast.ApiConfig(sessionRequest, this.sessionJoinedListener.bind(this), this.receiverListener.bind(this));
     return chrome.cast.initialize(apiConfig, this.onInitSuccess.bind(this), this.castError.bind(this));
-  },
+  }
 
   castError(castError) {
 
@@ -90,7 +90,7 @@ const ChromecastButton = videojs.extend(Button, {
       break;
     }
     return videojs.log('Cast Error: ' + (JSON.stringify(castError)));
-  },
+  }
 
   onInitSuccess() {
     if (hasReceiver) {
@@ -99,32 +99,47 @@ const ChromecastButton = videojs.extend(Button, {
       this.hide();
     }
     return this.apiInitialized = true;
-  },
+  }
 
   sessionJoinedListener(session) {
     if (session.media.length) {
       this.apiSession = session;
       this.onMediaDiscovered(session.media[0]);
     }
-    return console.log('Session joined');
-  },
+    return videojs.log('Session joined');
+  }
 
   receiverListener(availability) {
+    if (this.disposed)
+        return;
+
     if (availability === 'available') {
       hasReceiver = true;
       return this.show();
     }
     hasReceiver = false;
     return this.hide();
-  },
+  }
+
+  findSource() {
+    if (typeof this.options_.altSource == "function") {
+      return this.source = this.options_.altSource.call(this);
+    }
+
+    return this.source = this.options_.altSource || {
+      src: this.player_.cache_.src,
+      type: this.player_.currentType()
+    };
+  }
 
   doLaunch() {
+    this.findSource();
     videojs.log('Cast video: ' + (this.player_.cache_.src));
     if (this.apiInitialized) {
       return chrome.cast.requestSession(this.onSessionSuccess.bind(this), this.castError.bind(this));
     }
     return videojs.log('Session not initialized');
-  },
+  }
 
   onSessionSuccess(session) {
     let image;
@@ -135,31 +150,21 @@ const ChromecastButton = videojs.extend(Button, {
     let value;
 
     this.apiSession = session;
-    const source = this.player_.cache_.src;
-    const type = this.player_.currentType();
 
-    videojs.log('Session initialized: ' + session.sessionId + ' source : ' + source + ' type : ' + type);
+    videojs.log('Session initialized: ' + session.sessionId + ' source : ' + this.source.src + ' type : ' + this.source.type);
 
-    mediaInfo = new chrome.cast.media.MediaInfo(source, type);
+    mediaInfo = new chrome.cast.media.MediaInfo(this.source.src, this.source.type);
     mediaInfo.metadata = new chrome.cast.media.GenericMediaMetadata();
-
-    if (this.options_.playerOptions.chromecast === undefined) {
-      this.options_.playerOptions.chromecast = {};
-      this.options_.playerOptions.chromecast.metadata = '';
-    } else if (this.options_.playerOptions.chromecast.metadata === undefined) {
-      this.options_.playerOptions.chromecast.metadata = '';
+    if (this.options_.playerOptions.chromecast.metadata) {
+        ref = this.options_.playerOptions.chromecast.metadata;
+        for (key in ref) {
+            value = ref[key];
+            mediaInfo.metadata[key] = value;
+        }
     }
-    if (this.options_.playerOptions.chromecast.metadata !== '') {
-      ref = this.options_.playerOptions.chromecast.metadata;
-      for (key in ref) {
-        value = ref[key];
-        mediaInfo.metadata[key] = value;
-      }
 
-    }
     // Add poster image on player
     const poster = this.player().poster();
-
     if (poster) {
       image = new chrome.cast.Image(poster);
       mediaInfo.metadata.images = [image];
@@ -223,13 +228,14 @@ const ChromecastButton = videojs.extend(Button, {
 
     this.apiSession.loadMedia(loadRequest, this.onMediaDiscovered.bind(this), this.castError.bind(this));
     this.apiSession.addUpdateListener(this.onSessionUpdate.bind(this));
-  },
+  }
 
   onMediaDiscovered(media) {
-    this.player_.loadTech_('chromecast', {
-      type: 'cast',
-      apiMedia: media,
-      apiSession: this.apiSession
+    console.log(this.player_);
+    this.player_.loadTech_('Chromecast', {
+        type: 'cast',
+        apiMedia: media,
+        apiSession: this.apiSession
     });
 
     this.casting = true;
@@ -238,7 +244,7 @@ const ChromecastButton = videojs.extend(Button, {
     this.player_.userActive(true);
     this.addClass('connected');
     this.removeClass('error');
-  },
+  }
 
   onSessionUpdate(isAlive) {
     if (!this.player_.apiMedia) {
@@ -247,48 +253,49 @@ const ChromecastButton = videojs.extend(Button, {
     if (!isAlive) {
       return this.onStopAppSuccess();
     }
-  },
+  }
 
   stopCasting() {
     return this.apiSession.stop(this.onStopAppSuccess.bind(this), this.castError.bind(this));
-  },
+  }
 
   onStopAppSuccess() {
     this.casting = false;
     const time = this.player_.currentTime();
-
     this.removeClass('connected');
-    this.player_.src(this.player_.options_.sources);
-    if (!this.player_.paused()) {
-      this.player_.one('seeked', function() {
-        return this.player_.play();
-      });
+
+    if (this.options_.onStop) {
+      this.options_.onStop.call(this, this.source, time);
+    } else {
+      this.player_.reset();
+      this.player_.src(this.source);
+      if (!this.player_.paused()) {
+        this.player_.one('seeked', function () {
+          return this.player_.play();
+        });
+      }
+      this.player_.currentTime(time);
     }
-    this.player_.currentTime(time);
-    this.player_.options_.inactivityTimeout = this.inactivityTimeout;
+    this.player_.inactivityTimeout = this.inactivityTimeout;
     return this.apiSession = null;
-  },
+  }
 
   handleClick() {
-    Button.prototype.handleClick.call(this);
-
+    super.handleClick();
     if (this.casting) {
       return this.stopCasting();
     }
     return this.doLaunch();
-
   }
-});
+}
 
 ChromecastButton.prototype.tryingReconnect = 0;
-
 ChromecastButton.prototype.inactivityTimeout = 2000;
-
 ChromecastButton.prototype.controlText_ = 'Chromecast';
 ControlBar.prototype.options_.children.splice(ControlBar.prototype.options_.children.length - 2, 0, 'chromecastButton');
 
-if (typeof getComponent('ChromecastButton') === 'undefined') {
-  registerComponent('ChromecastButton', ChromecastButton);
+if (typeof Component.getComponent('ChromecastButton') === 'undefined') {
+    Component.registerComponent('ChromecastButton', ChromecastButton);
 }
 
 export default ChromecastButton;

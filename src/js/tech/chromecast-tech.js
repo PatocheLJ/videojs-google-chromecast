@@ -1,40 +1,37 @@
 import videojs from 'video.js';
 
-const getTech = videojs.getTech;
-const registerTech = videojs.registerTech;
-const Tech = getTech('Tech');
+const Component = videojs.getComponent('Component');
+const Tech = videojs.getComponent('Tech');
 
 /**
  * Chromecast Media Controller - Wrapper for HTML5 Media API
  *
- * @param {Object=} options Object of option names and values
- * @param {Function=} ready Ready callback function
+ * @param {Object=} params Object of option names and values
+ * @param {Function=} options Options callback function
  * @extends Tech
- * @class ChromecastTech
+ * @class Chromecast
  */
-const ChromecastTech = videojs.extend(Tech, {
-  constructor(options, ready) {
-    Tech.apply(this, arguments);
-
+class Chromecast extends Tech {
+  constructor(options, ready = {}) {
+    super(options, ready);
     this.apiMedia = this.options_.source.apiMedia;
     this.apiSession = this.options_.source.apiSession;
     this.receiver = this.apiSession.receiver.friendlyName;
 
-    const mediaStatusUpdateHandler = this.onMediaStatusUpdate.bind(this);
-    const sessionUpdateHanlder = this.onSessionUpdate.bind(this);
+    let mediaStatusUpdateHandler = this.onMediaStatusUpdate.bind(this);
+    let sessionUpdateHandler = this.onSessionUpdate.bind(this);
 
     this.apiMedia.addUpdateListener(mediaStatusUpdateHandler);
-    this.apiSession.addUpdateListener(sessionUpdateHanlder);
+    this.apiSession.addUpdateListener(sessionUpdateHandler);
 
-    this.on('dispose', () => {
-      this.apiMedia.removeUpdateListener(mediaStatusUpdateHandler);
-      this.apiSession.removeUpdateListener(sessionUpdateHanlder);
-      this.onMediaStatusUpdate();
-      this.onSessionUpdate(false);
+      this.on('dispose', () => {
+          this.apiMedia.removeUpdateListener(mediaStatusUpdateHandler);
+          this.apiSession.removeUpdateListener(sessionUpdateHandler);
+          this.onMediaStatusUpdate();
+          this.onSessionUpdate(false);
     });
 
     let tracks = this.textTracks();
-
     if (tracks) {
       const changeHandler = this.handleTextTracksChange.bind(this);
 
@@ -70,7 +67,6 @@ const ChromecastTech = videojs.extend(Tech, {
         this.on('dispose', function() {
           tracks.removeEventListener('change', changeHandler);
         });
-
       }
     } catch (e) {
       videojs.log('get player videoTracks fail' + e);
@@ -78,20 +74,19 @@ const ChromecastTech = videojs.extend(Tech, {
 
     this.update();
     this.triggerReady();
-  },
+  }
 
   createEl() {
     const el = videojs.dom.createEl('div', {
       id: this.options_.techId,
       className: 'vjs-tech vjs-tech-chromecast'
     });
-
     return el;
-  },
+  }
 
   update() {
     this.el_.innerHTML = `<div class="casting-image" style="background-image: url('${this.options_.poster}')"></div><div class="casting-overlay"><div class="casting-information"><div class="casting-icon"></div><div class="casting-description"><small>${this.localize('CASTING TO')}</small><br>${this.receiver}</div></div></div>`;
-  },
+  }
 
   onSessionUpdate(isAlive) {
     if (!this.apiMedia) {
@@ -100,12 +95,12 @@ const ChromecastTech = videojs.extend(Tech, {
     if (!isAlive) {
       return this.onStopAppSuccess();
     }
-  },
+  }
 
   onStopAppSuccess() {
     this.stopTrackingCurrentTime();
     this.apiMedia = null;
-  },
+  }
 
   onMediaStatusUpdate() {
     if (!this.apiMedia) {
@@ -130,22 +125,16 @@ const ChromecastTech = videojs.extend(Tech, {
       this.paused_ = false;
       break;
     }
-  },
+  }
 
-  /**
-     * Set video
-     *
-     * @param {Object=} src Source object
-     * @method setSrc
-     */
-  src(src) {},
+  src(src) {}
 
   currentSrc() {
     if (!this.apiMedia) {
       return;
     }
     return this.apiMedia.media.contentId;
-  },
+  }
 
   handleAudioTracksChange() {
     const trackInfo = [];
@@ -158,9 +147,7 @@ const ChromecastTech = videojs.extend(Tech, {
 
     for (let i = 0; i < tracks.length; i++) {
       const track = tracks[i];
-
       if (track.enabled) {
-        // set id of cuurentTrack audio
         trackInfo.push((i + 1) + tTracks.length);
       }
     }
@@ -169,11 +156,10 @@ const ChromecastTech = videojs.extend(Tech, {
       this.tracksInfoRequest = new chrome.cast.media.EditTracksInfoRequest(trackInfo);
       return this.apiMedia.editTracksInfo(this.tracksInfoRequest, this.onTrackSuccess.bind(this), this.onTrackError.bind(this));
     }
-  },
+  }
 
   handleVideoTracksChange() {
-
-  },
+  }
 
   handleTextTracksChange() {
     const trackInfo = [];
@@ -195,19 +181,19 @@ const ChromecastTech = videojs.extend(Tech, {
       this.tracksInfoRequest = new chrome.cast.media.EditTracksInfoRequest(trackInfo);
       return this.apiMedia.editTracksInfo(this.tracksInfoRequest, this.onTrackSuccess.bind(this), this.onTrackError.bind(this));
     }
-  },
+  }
 
   onTrackSuccess() {
     return videojs.log('track added');
-  },
+  }
 
   onTrackError(e) {
     return videojs.log('Cast track Error: ' + JSON.stringify(e));
-  },
+  }
 
   castError(e) {
     return videojs.log('Cast Error: ' + JSON.stringify(e));
-  },
+  }
 
   play() {
     if (!this.apiMedia) {
@@ -217,7 +203,7 @@ const ChromecastTech = videojs.extend(Tech, {
       this.apiMedia.play(null, this.mediaCommandSuccessCallback.bind(this, 'Playing: ' + this.apiMedia.sessionId), this.castError.bind(this));
     }
     return this.paused_ = false;
-  },
+  }
 
   pause() {
     if (!this.apiMedia) {
@@ -227,56 +213,56 @@ const ChromecastTech = videojs.extend(Tech, {
       this.apiMedia.pause(null, this.mediaCommandSuccessCallback.bind(this, 'Paused: ' + this.apiMedia.sessionId), this.castError.bind(this));
       return this.paused_ = true;
     }
-  },
+  }
 
   paused() {
     return this.paused_;
-  },
+  }
 
   ended() {
     return chrome.cast.media.IdleReason === 'FINISHED';
-  },
+  }
 
   currentTime() {
     if (!this.apiMedia) {
       return 0;
     }
     return this.apiMedia.getEstimatedTime();
-  },
+  }
 
   setCurrentTime(position) {
 
     if (!this.apiMedia) {
       return 0;
     }
-    let request;
 
+    let request;
     request = new chrome.cast.media.SeekRequest();
     request.currentTime = position;
     // if (this.player_.controlBar.progressControl.seekBar.videoWasPlaying) {
     //  request.resumeState = chrome.cast.media.ResumeState.PLAYBACK_START;
     // }
     return this.apiMedia.seek(request, this.onSeekSuccess.bind(this, position), this.castError.bind(this));
-  },
+  }
 
   onSeekSuccess(position) {
     videojs.log('seek success' + position);
-  },
+  }
 
   volume() {
     return this.volume_;
-  },
+  }
 
   duration() {
     if (!this.apiMedia) {
       return 0;
     }
     return this.apiMedia.media.duration || Infinity;
-  },
+  }
 
   controls() {
     return false;
-  },
+  }
 
   setVolume(level, mute = false) {
     let request;
@@ -294,58 +280,60 @@ const ChromecastTech = videojs.extend(Tech, {
     request.volume = volume;
     this.apiMedia.setVolume(request, this.mediaCommandSuccessCallback.bind(this, 'Volume changed'), this.castError.bind(this));
     return this.trigger('volumechange');
-  },
+  }
 
   mediaCommandSuccessCallback(information) {
     videojs.log(information);
-  },
+  }
 
   muted() {
     return this.muted_;
-  },
+  }
 
   setMuted(muted) {
     return this.setVolume(this.volume_, muted);
-  },
+  }
 
   supportsFullScreen() {
     return false;
-  },
+  }
 
   resetSrc_(callback) {
     callback();
-  },
+  }
 
   dispose() {
     this.resetSrc_(Function.prototype);
-    Tech.prototype.dispose.call(this);
-  },
+    super.dispose(this);
+  }
 
   seeking() {
     return false;
-  },
+  }
 
   seekable() {
     return false;
-  },
+  }
 
   playbackRate() {
     return 1;
   }
-});
+}
 
-ChromecastTech.prototype.paused_ = false;
+Chromecast.prototype.paused_ = false;
 
-ChromecastTech.prototype.timerStep = 1000;
+Chromecast.prototype.options_ = {};
 
-/* ChromecastTech Support Testing -------------------------------------------------------- */
+Chromecast.prototype.timerStep = 1000;
 
-ChromecastTech.isSupported = function() {
-  return true;
+/* Chromecast Support Testing -------------------------------------------------------- */
+
+Chromecast.isSupported = function () {
+    return true;
 };
 
 // Add Source Handler pattern functions to this tech
-Tech.withSourceHandlers(ChromecastTech);
+Tech.withSourceHandlers(Chromecast);
 
 /*
  * The default native source handler.
@@ -354,25 +342,25 @@ Tech.withSourceHandlers(ChromecastTech);
  * @param  {Object} source   The source object
  * @param  {Flash} tech  The instance of the Flash tech
  */
-ChromecastTech.nativeSourceHandler = {};
+Chromecast.nativeSourceHandler = {};
 
 /**
  * Check if Flash can play the given videotype
- *
- * @param  {string} type    The mimetype to check
- * @return {string}         'probably', 'maybe', or '' (empty string)
+ * @param  {String} type    The mimetype to check
+ * @return {String}         'probably', 'maybe', or '' (empty string)
  */
-ChromecastTech.nativeSourceHandler.canPlayType = function(source) {
+Chromecast.nativeSourceHandler.canPlayType = function (source) {
 
-  const dashTypeRE = /^application\/(?:dash\+xml|(x-|vnd\.apple\.)mpegurl)/i;
-  const dashExtRE = /^video\/(mpd|mp4|webm|m3u8)/i;
+    const dashTypeRE = /^application\/(?:dash\+xml|(x-|vnd\.apple\.)mpegurl)/i;
+    const dashExtRE = /^video\/(mpd|mp4|webm|m3u8)/i;
 
-  if (dashTypeRE.test(source)) {
-    return 'probably';
-  } else if (dashExtRE.test(source)) {
-    return 'maybe';
-  }
-  return '';
+    if (dashTypeRE.test(source)) {
+        return 'probably';
+    } else if (dashExtRE.test(source)) {
+        return 'maybe';
+    } else {
+        return '';
+    }
 
 };
 
@@ -382,16 +370,16 @@ ChromecastTech.nativeSourceHandler.canPlayType = function(source) {
  * @param  {Object} source  The source object
  * @return {String}         'probably', 'maybe', or '' (empty string)
  */
-ChromecastTech.nativeSourceHandler.canHandleSource = function(source) {
+Chromecast.nativeSourceHandler.canHandleSource = function (source) {
 
-  // If a type was provided we should rely on that
-  if (source.type) {
-    return ChromecastTech.nativeSourceHandler.canPlayType(source.type);
-  } else if (source.src) {
-    return ChromecastTech.nativeSourceHandler.canPlayType(source.src);
-  }
+    // If a type was provided we should rely on that
+    if (source.type) {
+        return Chromecast.nativeSourceHandler.canPlayType(source.type);
+    } else if (source.src) {
+        return Chromecast.nativeSourceHandler.canPlayType(source.src);
+    }
 
-  return '';
+    return '';
 };
 
 /*
@@ -402,32 +390,33 @@ ChromecastTech.nativeSourceHandler.canHandleSource = function(source) {
  * @param  {Object} source    The source object
  * @param  {Flash} tech   The instance of the Flash tech
  */
-ChromecastTech.nativeSourceHandler.handleSource = function(source, tech) {
-  tech.src(source.src);
+Chromecast.nativeSourceHandler.handleSource = function (source, tech) {
+    tech.src(source.src);
 };
 
 /*
  * Clean up the source handler when disposing the player or switching sources..
  * (no cleanup is needed when supporting the format natively)
  */
-ChromecastTech.nativeSourceHandler.dispose = function() { };
+Chromecast.nativeSourceHandler.dispose = function () {
+};
 
 // Register the native source handler
-ChromecastTech.registerSourceHandler(ChromecastTech.nativeSourceHandler);
+Chromecast.registerSourceHandler(Chromecast.nativeSourceHandler);
 
 /*
  * Set the tech's volume control support status
  *
  * @type {Boolean}
  */
-ChromecastTech.prototype.featuresVolumeControl = true;
+Chromecast.prototype.featuresVolumeControl = true;
 
 /*
  * Set the tech's playbackRate support status
  *
  * @type {Boolean}
  */
-ChromecastTech.prototype.featuresPlaybackRate = false;
+Chromecast.prototype.featuresPlaybackRate = false;
 
 /*
  * Set the tech's status on moving the video element.
@@ -435,53 +424,54 @@ ChromecastTech.prototype.featuresPlaybackRate = false;
  *
  * @type {Boolean}
  */
-ChromecastTech.prototype.movingMediaElementInDOM = false;
+Chromecast.prototype.movingMediaElementInDOM = false;
 
 /*
  * Set the the tech's fullscreen resize support status.
  * HTML video is able to automatically resize when going to fullscreen.
  * (No longer appears to be used. Can probably be removed.)
  */
-ChromecastTech.prototype.featuresFullscreenResize = false;
+Chromecast.prototype.featuresFullscreenResize = false;
 
 /*
  * Set the tech's timeupdate event support status
  * (this disables the manual timeupdate events of the Tech)
  */
-ChromecastTech.prototype.featuresTimeupdateEvents = false;
+Chromecast.prototype.featuresTimeupdateEvents = false;
 
 /*
  * Set the tech's progress event support status
  * (this disables the manual progress events of the Tech)
  */
-ChromecastTech.prototype.featuresProgressEvents = false;
+Chromecast.prototype.featuresProgressEvents = false;
 
 /*
  * Sets the tech's status on native text track support
  *
  * @type {Boolean}
  */
-ChromecastTech.prototype.featuresNativeTextTracks = true;
+Chromecast.prototype.featuresNativeTextTracks = true;
 
 /*
  * Sets the tech's status on native audio track support
  *
  * @type {Boolean}
  */
-ChromecastTech.prototype.featuresNativeAudioTracks = true;
+Chromecast.prototype.featuresNativeAudioTracks = true;
 
 /*
  * Sets the tech's status on native video track support
  *
  * @type {Boolean}
  */
-ChromecastTech.prototype.featuresNativeVideoTracks = false;
+Chromecast.prototype.featuresNativeVideoTracks = false;
 
-// videojs.options.chromecast = {};
+
+videojs.options.chromecast = {};
 
 // Register the compnent with video.js, avoid double registration
-if (typeof getTech('ChromecastTech') === 'undefined') {
-  registerTech('chromecast', ChromecastTech);
+if (typeof Tech.getTech('Chromecast') === 'undefined') {
+  Tech.registerTech('Chromecast', Chromecast);
 }
 
-export default ChromecastTech;
+export default Chromecast;
