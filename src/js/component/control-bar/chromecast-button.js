@@ -232,7 +232,7 @@ class ChromecastButton extends Button {
 
   onMediaDiscovered(media) {
     console.log(this.player_);
-    this.player_.loadTech_('Chromecast', {
+    this.player_.loadTech_('ChromecastTech', {
         type: 'cast',
         apiMedia: media,
         apiSession: this.apiSession

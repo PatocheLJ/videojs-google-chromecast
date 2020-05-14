@@ -11,7 +11,7 @@ const Tech = videojs.getComponent('Tech');
  * @extends Tech
  * @class Chromecast
  */
-class Chromecast extends Tech {
+class ChromecastTech extends Tech {
   constructor(options, ready = {}) {
     super(options, ready);
     this.apiMedia = this.options_.source.apiMedia;
@@ -320,20 +320,20 @@ class Chromecast extends Tech {
   }
 }
 
-Chromecast.prototype.paused_ = false;
+ChromecastTech.prototype.paused_ = false;
 
-Chromecast.prototype.options_ = {};
+ChromecastTech.prototype.options_ = {};
 
-Chromecast.prototype.timerStep = 1000;
+ChromecastTech.prototype.timerStep = 1000;
 
 /* Chromecast Support Testing -------------------------------------------------------- */
 
-Chromecast.isSupported = function () {
+ChromecastTech.isSupported = function () {
     return true;
 };
 
 // Add Source Handler pattern functions to this tech
-Tech.withSourceHandlers(Chromecast);
+Tech.withSourceHandlers(ChromecastTech);
 
 /*
  * The default native source handler.
@@ -342,14 +342,14 @@ Tech.withSourceHandlers(Chromecast);
  * @param  {Object} source   The source object
  * @param  {Flash} tech  The instance of the Flash tech
  */
-Chromecast.nativeSourceHandler = {};
+ChromecastTech.nativeSourceHandler = {};
 
 /**
  * Check if Flash can play the given videotype
  * @param  {String} type    The mimetype to check
  * @return {String}         'probably', 'maybe', or '' (empty string)
  */
-Chromecast.nativeSourceHandler.canPlayType = function (source) {
+ChromecastTech.nativeSourceHandler.canPlayType = function (source) {
 
     const dashTypeRE = /^application\/(?:dash\+xml|(x-|vnd\.apple\.)mpegurl)/i;
     const dashExtRE = /^video\/(mpd|mp4|webm|m3u8)/i;
@@ -370,13 +370,13 @@ Chromecast.nativeSourceHandler.canPlayType = function (source) {
  * @param  {Object} source  The source object
  * @return {String}         'probably', 'maybe', or '' (empty string)
  */
-Chromecast.nativeSourceHandler.canHandleSource = function (source) {
+ChromecastTech.nativeSourceHandler.canHandleSource = function (source) {
 
     // If a type was provided we should rely on that
     if (source.type) {
-        return Chromecast.nativeSourceHandler.canPlayType(source.type);
+        return ChromecastTech.nativeSourceHandler.canPlayType(source.type);
     } else if (source.src) {
-        return Chromecast.nativeSourceHandler.canPlayType(source.src);
+        return ChromecastTech.nativeSourceHandler.canPlayType(source.src);
     }
 
     return '';
@@ -390,7 +390,7 @@ Chromecast.nativeSourceHandler.canHandleSource = function (source) {
  * @param  {Object} source    The source object
  * @param  {Flash} tech   The instance of the Flash tech
  */
-Chromecast.nativeSourceHandler.handleSource = function (source, tech) {
+ChromecastTech.nativeSourceHandler.handleSource = function (source, tech) {
     tech.src(source.src);
 };
 
@@ -398,25 +398,25 @@ Chromecast.nativeSourceHandler.handleSource = function (source, tech) {
  * Clean up the source handler when disposing the player or switching sources..
  * (no cleanup is needed when supporting the format natively)
  */
-Chromecast.nativeSourceHandler.dispose = function () {
+ChromecastTech.nativeSourceHandler.dispose = function () {
 };
 
 // Register the native source handler
-Chromecast.registerSourceHandler(Chromecast.nativeSourceHandler);
+ChromecastTech.registerSourceHandler(ChromecastTech.nativeSourceHandler);
 
 /*
  * Set the tech's volume control support status
  *
  * @type {Boolean}
  */
-Chromecast.prototype.featuresVolumeControl = true;
+ChromecastTech.prototype.featuresVolumeControl = true;
 
 /*
  * Set the tech's playbackRate support status
  *
  * @type {Boolean}
  */
-Chromecast.prototype.featuresPlaybackRate = false;
+ChromecastTech.prototype.featuresPlaybackRate = false;
 
 /*
  * Set the tech's status on moving the video element.
@@ -424,54 +424,54 @@ Chromecast.prototype.featuresPlaybackRate = false;
  *
  * @type {Boolean}
  */
-Chromecast.prototype.movingMediaElementInDOM = false;
+ChromecastTech.prototype.movingMediaElementInDOM = false;
 
 /*
  * Set the the tech's fullscreen resize support status.
  * HTML video is able to automatically resize when going to fullscreen.
  * (No longer appears to be used. Can probably be removed.)
  */
-Chromecast.prototype.featuresFullscreenResize = false;
+ChromecastTech.prototype.featuresFullscreenResize = false;
 
 /*
  * Set the tech's timeupdate event support status
  * (this disables the manual timeupdate events of the Tech)
  */
-Chromecast.prototype.featuresTimeupdateEvents = false;
+ChromecastTech.prototype.featuresTimeupdateEvents = false;
 
 /*
  * Set the tech's progress event support status
  * (this disables the manual progress events of the Tech)
  */
-Chromecast.prototype.featuresProgressEvents = false;
+ChromecastTech.prototype.featuresProgressEvents = false;
 
 /*
  * Sets the tech's status on native text track support
  *
  * @type {Boolean}
  */
-Chromecast.prototype.featuresNativeTextTracks = true;
+ChromecastTech.prototype.featuresNativeTextTracks = true;
 
 /*
  * Sets the tech's status on native audio track support
  *
  * @type {Boolean}
  */
-Chromecast.prototype.featuresNativeAudioTracks = true;
+ChromecastTech.prototype.featuresNativeAudioTracks = true;
 
 /*
  * Sets the tech's status on native video track support
  *
  * @type {Boolean}
  */
-Chromecast.prototype.featuresNativeVideoTracks = false;
+ChromecastTech.prototype.featuresNativeVideoTracks = false;
 
 
 videojs.options.chromecast = {};
 
 // Register the compnent with video.js, avoid double registration
-if (typeof Tech.getTech('Chromecast') === 'undefined') {
-  Tech.registerTech('Chromecast', Chromecast);
+if (typeof Tech.getTech('ChromecastTech') === 'undefined') {
+  Tech.registerTech('ChromecastTech', ChromecastTech);
 }
 
-export default Chromecast;
+export default ChromecastTech;

@@ -1,4 +1,4 @@
-/*! @name videojs-google-chromecast @version 0.0.2 @license UNLICENSED */
+/*! @name videojs-google-chromecast @version 0.0.3 @license UNLICENSED */
 (function (QUnit, sinon, videojs) {
 	'use strict';
 
@@ -39,7 +39,7 @@
 
 	var document_1 = doccy;
 
-	var version = "0.0.2";
+	var version = "0.0.3";
 
 	function _inheritsLoose(subClass, superClass) {
 	  subClass.prototype = Object.create(superClass.prototype);
@@ -4019,7 +4019,7 @@
 	    cov_1iiyehkoov.s[122]++;
 	    console.log(this.player_);
 	    cov_1iiyehkoov.s[123]++;
-	    this.player_.loadTech_('Chromecast', {
+	    this.player_.loadTech_('ChromecastTech', {
 	      type: 'cast',
 	      apiMedia: media,
 	      apiSession: this.apiSession
@@ -4153,7 +4153,7 @@
 
 	var cov_2q58cqsssn = function () {
 	  var path = '/Users/plo/Blockchain.nosync/LBRY/App/plugins/videojs-google-chromecast/src/js/tech/chromecast-tech.js',
-	      hash = '3a802f109197ffb1e03b9ee0ae54d237e904cacb',
+	      hash = '2b6a338231249599bf8aff359d541121c6abc64d',
 	      Function = function () {}.constructor,
 	      global = new Function('return this')(),
 	      gcv = '__coverage__',
@@ -5567,7 +5567,7 @@
 	        },
 	        end: {
 	          line: 323,
-	          column: 37
+	          column: 41
 	        }
 	      },
 	      '141': {
@@ -5577,7 +5577,7 @@
 	        },
 	        end: {
 	          line: 325,
-	          column: 35
+	          column: 39
 	        }
 	      },
 	      '142': {
@@ -5587,7 +5587,7 @@
 	        },
 	        end: {
 	          line: 327,
-	          column: 38
+	          column: 42
 	        }
 	      },
 	      '143': {
@@ -5617,7 +5617,7 @@
 	        },
 	        end: {
 	          line: 336,
-	          column: 36
+	          column: 40
 	        }
 	      },
 	      '146': {
@@ -5627,7 +5627,7 @@
 	        },
 	        end: {
 	          line: 345,
-	          column: 36
+	          column: 40
 	        }
 	      },
 	      '147': {
@@ -5737,7 +5737,7 @@
 	        },
 	        end: {
 	          line: 377,
-	          column: 71
+	          column: 75
 	        }
 	      },
 	      '158': {
@@ -5757,7 +5757,7 @@
 	        },
 	        end: {
 	          line: 379,
-	          column: 70
+	          column: 74
 	        }
 	      },
 	      '160': {
@@ -5807,7 +5807,7 @@
 	        },
 	        end: {
 	          line: 405,
-	          column: 65
+	          column: 73
 	        }
 	      },
 	      '165': {
@@ -5817,7 +5817,7 @@
 	        },
 	        end: {
 	          line: 412,
-	          column: 50
+	          column: 54
 	        }
 	      },
 	      '166': {
@@ -5827,7 +5827,7 @@
 	        },
 	        end: {
 	          line: 419,
-	          column: 50
+	          column: 54
 	        }
 	      },
 	      '167': {
@@ -5837,7 +5837,7 @@
 	        },
 	        end: {
 	          line: 427,
-	          column: 53
+	          column: 57
 	        }
 	      },
 	      '168': {
@@ -5847,7 +5847,7 @@
 	        },
 	        end: {
 	          line: 434,
-	          column: 54
+	          column: 58
 	        }
 	      },
 	      '169': {
@@ -5857,7 +5857,7 @@
 	        },
 	        end: {
 	          line: 440,
-	          column: 54
+	          column: 58
 	        }
 	      },
 	      '170': {
@@ -5867,7 +5867,7 @@
 	        },
 	        end: {
 	          line: 446,
-	          column: 52
+	          column: 56
 	        }
 	      },
 	      '171': {
@@ -5877,7 +5877,7 @@
 	        },
 	        end: {
 	          line: 453,
-	          column: 53
+	          column: 57
 	        }
 	      },
 	      '172': {
@@ -5887,7 +5887,7 @@
 	        },
 	        end: {
 	          line: 460,
-	          column: 54
+	          column: 58
 	        }
 	      },
 	      '173': {
@@ -5897,7 +5897,7 @@
 	        },
 	        end: {
 	          line: 467,
-	          column: 55
+	          column: 59
 	        }
 	      },
 	      '174': {
@@ -5927,7 +5927,7 @@
 	        },
 	        end: {
 	          line: 474,
-	          column: 46
+	          column: 54
 	        }
 	      }
 	    },
@@ -6849,17 +6849,17 @@
 	        decl: {
 	          start: {
 	            line: 331,
-	            column: 25
+	            column: 29
 	          },
 	          end: {
 	            line: 331,
-	            column: 26
+	            column: 30
 	          }
 	        },
 	        loc: {
 	          start: {
 	            line: 331,
-	            column: 37
+	            column: 41
 	          },
 	          end: {
 	            line: 333,
@@ -6873,17 +6873,17 @@
 	        decl: {
 	          start: {
 	            line: 352,
-	            column: 45
+	            column: 49
 	          },
 	          end: {
 	            line: 352,
-	            column: 46
+	            column: 50
 	          }
 	        },
 	        loc: {
 	          start: {
 	            line: 352,
-	            column: 63
+	            column: 67
 	          },
 	          end: {
 	            line: 365,
@@ -6897,17 +6897,17 @@
 	        decl: {
 	          start: {
 	            line: 373,
-	            column: 49
+	            column: 53
 	          },
 	          end: {
 	            line: 373,
-	            column: 50
+	            column: 54
 	          }
 	        },
 	        loc: {
 	          start: {
 	            line: 373,
-	            column: 67
+	            column: 71
 	          },
 	          end: {
 	            line: 383,
@@ -6921,17 +6921,17 @@
 	        decl: {
 	          start: {
 	            line: 393,
-	            column: 46
+	            column: 50
 	          },
 	          end: {
 	            line: 393,
-	            column: 47
+	            column: 51
 	          }
 	        },
 	        loc: {
 	          start: {
 	            line: 393,
-	            column: 70
+	            column: 74
 	          },
 	          end: {
 	            line: 395,
@@ -6945,17 +6945,17 @@
 	        decl: {
 	          start: {
 	            line: 401,
-	            column: 41
+	            column: 45
 	          },
 	          end: {
 	            line: 401,
-	            column: 42
+	            column: 46
 	          }
 	        },
 	        loc: {
 	          start: {
 	            line: 401,
-	            column: 53
+	            column: 57
 	          },
 	          end: {
 	            line: 402,
@@ -8295,10 +8295,10 @@
 	var Component$1 = (cov_2q58cqsssn.s[0]++, videojs.getComponent('Component'));
 	var Tech = (cov_2q58cqsssn.s[1]++, videojs.getComponent('Tech'));
 
-	var Chromecast = /*#__PURE__*/function (_Tech) {
-	  inheritsLoose(Chromecast, _Tech);
+	var ChromecastTech = /*#__PURE__*/function (_Tech) {
+	  inheritsLoose(ChromecastTech, _Tech);
 
-	  function Chromecast(options, ready) {
+	  function ChromecastTech(options, ready) {
 	    var _this;
 
 	    if (ready === void 0) {
@@ -8437,7 +8437,7 @@
 	    return _this;
 	  }
 
-	  var _proto = Chromecast.prototype;
+	  var _proto = ChromecastTech.prototype;
 
 	  _proto.createEl = function createEl() {
 	    cov_2q58cqsssn.f[5]++;
@@ -8895,30 +8895,30 @@
 	    return 1;
 	  };
 
-	  return Chromecast;
+	  return ChromecastTech;
 	}(Tech);
 
 	cov_2q58cqsssn.s[140]++;
-	Chromecast.prototype.paused_ = false;
+	ChromecastTech.prototype.paused_ = false;
 	cov_2q58cqsssn.s[141]++;
-	Chromecast.prototype.options_ = {};
+	ChromecastTech.prototype.options_ = {};
 	cov_2q58cqsssn.s[142]++;
-	Chromecast.prototype.timerStep = 1000;
+	ChromecastTech.prototype.timerStep = 1000;
 	cov_2q58cqsssn.s[143]++;
 
-	Chromecast.isSupported = function () {
+	ChromecastTech.isSupported = function () {
 	  cov_2q58cqsssn.f[38]++;
 	  cov_2q58cqsssn.s[144]++;
 	  return true;
 	};
 
 	cov_2q58cqsssn.s[145]++;
-	Tech.withSourceHandlers(Chromecast);
+	Tech.withSourceHandlers(ChromecastTech);
 	cov_2q58cqsssn.s[146]++;
-	Chromecast.nativeSourceHandler = {};
+	ChromecastTech.nativeSourceHandler = {};
 	cov_2q58cqsssn.s[147]++;
 
-	Chromecast.nativeSourceHandler.canPlayType = function (source) {
+	ChromecastTech.nativeSourceHandler.canPlayType = function (source) {
 	  cov_2q58cqsssn.f[39]++;
 	  var dashTypeRE = (cov_2q58cqsssn.s[148]++, /^application\/(?:dash\+xml|(x-|vnd\.apple\.)mpegurl)/i);
 	  var dashExtRE = (cov_2q58cqsssn.s[149]++, /^video\/(mpd|mp4|webm|m3u8)/i);
@@ -8946,14 +8946,14 @@
 
 	cov_2q58cqsssn.s[155]++;
 
-	Chromecast.nativeSourceHandler.canHandleSource = function (source) {
+	ChromecastTech.nativeSourceHandler.canHandleSource = function (source) {
 	  cov_2q58cqsssn.f[40]++;
 	  cov_2q58cqsssn.s[156]++;
 
 	  if (source.type) {
 	    cov_2q58cqsssn.b[29][0]++;
 	    cov_2q58cqsssn.s[157]++;
-	    return Chromecast.nativeSourceHandler.canPlayType(source.type);
+	    return ChromecastTech.nativeSourceHandler.canPlayType(source.type);
 	  } else {
 	    cov_2q58cqsssn.b[29][1]++;
 	    cov_2q58cqsssn.s[158]++;
@@ -8961,7 +8961,7 @@
 	    if (source.src) {
 	      cov_2q58cqsssn.b[30][0]++;
 	      cov_2q58cqsssn.s[159]++;
-	      return Chromecast.nativeSourceHandler.canPlayType(source.src);
+	      return ChromecastTech.nativeSourceHandler.canPlayType(source.src);
 	    } else {
 	      cov_2q58cqsssn.b[30][1]++;
 	    }
@@ -8973,7 +8973,7 @@
 
 	cov_2q58cqsssn.s[161]++;
 
-	Chromecast.nativeSourceHandler.handleSource = function (source, tech) {
+	ChromecastTech.nativeSourceHandler.handleSource = function (source, tech) {
 	  cov_2q58cqsssn.f[41]++;
 	  cov_2q58cqsssn.s[162]++;
 	  tech.src(source.src);
@@ -8981,38 +8981,38 @@
 
 	cov_2q58cqsssn.s[163]++;
 
-	Chromecast.nativeSourceHandler.dispose = function () {
+	ChromecastTech.nativeSourceHandler.dispose = function () {
 	  cov_2q58cqsssn.f[42]++;
 	};
 
 	cov_2q58cqsssn.s[164]++;
-	Chromecast.registerSourceHandler(Chromecast.nativeSourceHandler);
+	ChromecastTech.registerSourceHandler(ChromecastTech.nativeSourceHandler);
 	cov_2q58cqsssn.s[165]++;
-	Chromecast.prototype.featuresVolumeControl = true;
+	ChromecastTech.prototype.featuresVolumeControl = true;
 	cov_2q58cqsssn.s[166]++;
-	Chromecast.prototype.featuresPlaybackRate = false;
+	ChromecastTech.prototype.featuresPlaybackRate = false;
 	cov_2q58cqsssn.s[167]++;
-	Chromecast.prototype.movingMediaElementInDOM = false;
+	ChromecastTech.prototype.movingMediaElementInDOM = false;
 	cov_2q58cqsssn.s[168]++;
-	Chromecast.prototype.featuresFullscreenResize = false;
+	ChromecastTech.prototype.featuresFullscreenResize = false;
 	cov_2q58cqsssn.s[169]++;
-	Chromecast.prototype.featuresTimeupdateEvents = false;
+	ChromecastTech.prototype.featuresTimeupdateEvents = false;
 	cov_2q58cqsssn.s[170]++;
-	Chromecast.prototype.featuresProgressEvents = false;
+	ChromecastTech.prototype.featuresProgressEvents = false;
 	cov_2q58cqsssn.s[171]++;
-	Chromecast.prototype.featuresNativeTextTracks = true;
+	ChromecastTech.prototype.featuresNativeTextTracks = true;
 	cov_2q58cqsssn.s[172]++;
-	Chromecast.prototype.featuresNativeAudioTracks = true;
+	ChromecastTech.prototype.featuresNativeAudioTracks = true;
 	cov_2q58cqsssn.s[173]++;
-	Chromecast.prototype.featuresNativeVideoTracks = false;
+	ChromecastTech.prototype.featuresNativeVideoTracks = false;
 	cov_2q58cqsssn.s[174]++;
 	videojs.options.chromecast = {};
 	cov_2q58cqsssn.s[175]++;
 
-	if (typeof Tech.getTech('Chromecast') === 'undefined') {
+	if (typeof Tech.getTech('ChromecastTech') === 'undefined') {
 	  cov_2q58cqsssn.b[31][0]++;
 	  cov_2q58cqsssn.s[176]++;
-	  Tech.registerTech('Chromecast', Chromecast);
+	  Tech.registerTech('ChromecastTech', ChromecastTech);
 	} else {
 	  cov_2q58cqsssn.b[31][1]++;
 	}
@@ -9186,7 +9186,7 @@
 	}();
 	var Component$2 = (cov_2aep3n7mve.s[0]++, videojs.getComponent('Component'));
 
-	var Chromecast$1 = /*#__PURE__*/function (_Component) {
+	var Chromecast = /*#__PURE__*/function (_Component) {
 	  inheritsLoose(Chromecast, _Component);
 
 	  function Chromecast(player, options) {
@@ -9199,7 +9199,7 @@
 	}(Component$2);
 
 	cov_2aep3n7mve.s[2]++;
-	Chromecast$1.prototype.options_ = {};
+	Chromecast.prototype.options_ = {};
 	cov_2aep3n7mve.s[3]++;
 	videojs.options.children.push('chromecast');
 	cov_2aep3n7mve.s[4]++;
@@ -9211,7 +9211,7 @@
 	if (typeof Component$2.getComponent('Chromecast') === 'undefined') {
 	  cov_2aep3n7mve.b[0][0]++;
 	  cov_2aep3n7mve.s[6]++;
-	  Component$2.registerComponent('Chromecast', Chromecast$1);
+	  Component$2.registerComponent('Chromecast', Chromecast);
 	} else {
 	  cov_2aep3n7mve.b[0][1]++;
 	}
