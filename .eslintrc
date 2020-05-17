@@ -1,0 +1,9 @@
+{
+  "rules": {
+    "max-len": [1, 120],
+    "consistent-return": 0,
+    "global-require": 0,
+    "no-underscore-dangle": 0,
+  },
+  "parser": "babel-eslint"
+}
