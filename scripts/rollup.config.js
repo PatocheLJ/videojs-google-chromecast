@@ -6,14 +6,14 @@ const options = {
   globals(defaults) {
     return {
       browser: Object.assign(defaults.browser, {
-        'node-mdns-easy': 'Mdns',
+        'node-mdns-easy': 'Mdns'
       }),
       module: Object.assign(defaults.module, {
         'node-mdns-easy': 'Mdns'
       }),
       test: Object.assign(defaults.test, {
         'node-mdns-easy': 'Mdns'
-      }),
+      })
     };
   }
 };
