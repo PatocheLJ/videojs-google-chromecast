@@ -1,10 +1,10 @@
-/*! @name videojs-google-chromecast @version 0.0.5 @license UNLICENSED */
+/*! @name videojs-google-chromecast @version 0.0.6 @license UNLICENSED */
 import videojs from 'video.js';
 import _inheritsLoose from '@babel/runtime/helpers/inheritsLoose';
 import _assertThisInitialized from '@babel/runtime/helpers/assertThisInitialized';
 import ChromecastAPI from 'chromecast-api';
 
-var version = "0.0.5";
+var version = "0.0.6";
 
 var Component = videojs.getComponent('Component');
 var ControlBar = videojs.getComponent('ControlBar');

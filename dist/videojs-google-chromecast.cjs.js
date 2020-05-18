@@ -1,4 +1,4 @@
-/*! @name videojs-google-chromecast @version 0.0.5 @license UNLICENSED */
+/*! @name videojs-google-chromecast @version 0.0.6 @license UNLICENSED */
 'use strict';
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
@@ -8,7 +8,7 @@ var _inheritsLoose = _interopDefault(require('@babel/runtime/helpers/inheritsLoo
 var _assertThisInitialized = _interopDefault(require('@babel/runtime/helpers/assertThisInitialized'));
 var ChromecastAPI = _interopDefault(require('chromecast-api'));
 
-var version = "0.0.5";
+var version = "0.0.6";
 
 var Component = videojs.getComponent('Component');
 var ControlBar = videojs.getComponent('ControlBar');

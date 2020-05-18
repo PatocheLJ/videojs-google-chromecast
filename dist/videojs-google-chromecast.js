@@ -1,10 +1,10 @@
 /**
  * videojs-google-chromecast
- * @version 0.0.5
+ * @version 0.0.6
  * @copyright 2020 mikadoplus <plo@mikadoplus.lu>
  * @license UNLICENSED
  */
-/*! @name videojs-google-chromecast @version 0.0.5 @license UNLICENSED */
+/*! @name videojs-google-chromecast @version 0.0.6 @license UNLICENSED */
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('video.js'), require('http'), require('events'), require('dgram'), require('util'), require('buffer'), require('os'), require('crypto'), require('assert'), require('stream'), require('string_decoder'), require('timers'), require('buffer-indexof'), require('tls'), require('fs'), require('https'), require('url'), require('path'), require('querystring'), require('zlib')) :
   typeof define === 'function' && define.amd ? define(['video.js', 'http', 'events', 'dgram', 'util', 'buffer', 'os', 'crypto', 'assert', 'stream', 'string_decoder', 'timers', 'buffer-indexof', 'tls', 'fs', 'https', 'url', 'path', 'querystring', 'zlib'], factory) :
@@ -32,7 +32,7 @@
   querystring$1 = querystring$1 && Object.prototype.hasOwnProperty.call(querystring$1, 'default') ? querystring$1['default'] : querystring$1;
   zlib = zlib && Object.prototype.hasOwnProperty.call(zlib, 'default') ? zlib['default'] : zlib;
 
-  var version = "0.0.5";
+  var version = "0.0.6";
 
   function _inheritsLoose(subClass, superClass) {
     subClass.prototype = Object.create(superClass.prototype);

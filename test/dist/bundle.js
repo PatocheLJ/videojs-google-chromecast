@@ -1,4 +1,4 @@
-/*! @name videojs-google-chromecast @version 0.0.5 @license UNLICENSED */
+/*! @name videojs-google-chromecast @version 0.0.6 @license UNLICENSED */
 (function (QUnit, sinon, videojs, http, events, dgram, util, buffer, os, crypto, assert, stream, string_decoder, timers, bufferIndexof, tls, fs$1, https, url, path, querystring$1, zlib) {
 	'use strict';
 
@@ -66,7 +66,7 @@
 
 	var document_1 = doccy;
 
-	var version = "0.0.5";
+	var version = "0.0.6";
 
 	function _inheritsLoose(subClass, superClass) {
 	  subClass.prototype = Object.create(superClass.prototype);
