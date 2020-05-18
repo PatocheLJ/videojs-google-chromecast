@@ -1,4 +1,5 @@
 import videojs from 'video.js';
+import ChromecastAPI from 'chromecast-api';
 import ChromecastTech from '../../tech/chromecast-tech';
 
 let Component = videojs.getComponent('Component');
@@ -6,10 +7,8 @@ let ControlBar = videojs.getComponent('ControlBar');
 let Button = videojs.getComponent('Button');
 let Tech = videojs.getComponent('Tech');
 
-const ENABLE_LIVE = false;
 const DEFAULT_VOLUME = 0.5;
 const FULL_VOLUME_HEIGHT = 100;
-const TIMER_STEP = 1000;
 
 const PLAYER_STATE = {
     // No media is loaded into the player.
@@ -36,6 +35,13 @@ class ChromecastButton extends Button {
     this.casting = false;
     this.apiSession = null;
     this.tryingReconnect = 0;
+    this.mDNS = false;
+    this.receivers = null;
+
+    if(this.options.mdns !== undefined && this.options.mdns) {
+        this.mDNS = true;
+        this.receivers = [];
+    }
 
     this.hide();
 
@@ -59,7 +65,9 @@ class ChromecastButton extends Button {
   }
 
   initCastPlayer(){
-    var options = this.options_.playerOptions.plugins.chromecast;
+    var _this = this;
+    var options = _this.options;
+
     if (options.appId !== undefined && options.appId !== '') {
         this.appId = options.appId;
     } else if (chrome.cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID) {
@@ -76,6 +84,17 @@ class ChromecastButton extends Button {
         receiverApplicationId: this.appId,
         autoJoinPolicy: this.autoJoinPolicy
       });
+
+      if (this.options.mdns !== undefined && this.options.mdns) {
+          const client = new ChromecastAPI();
+          this.client = client;
+          this.client.on('device', function (device) {
+              if (device !== undefined) {
+                  _this.receivers.push(device);
+              }
+          });
+          console.log(this.client);
+      }
 
       this.remotePlayer = new cast.framework.RemotePlayer();
       this.remotePlayerController = new cast.framework.RemotePlayerController(this.remotePlayer);
@@ -296,7 +315,6 @@ class ChromecastButton extends Button {
           this.setupLocalPlayer();
       }
     } else {
-        // casting has ended so the session needs to be renewed
         this.setupLocalPlayer();
     }
   }
@@ -634,17 +652,14 @@ class ChromecastButton extends Button {
       var _this = this;
 
       playerTarget.play = function () {
-          //this.play();
           videojs.log("local player play");
       };
 
       playerTarget.pause = function () {
-          //this.pause();
           videojs.log("local player pause");
       };
 
       playerTarget.stop = function () {
-          //this.stop();
           videojs.log("local player stop");
       };
 
@@ -698,10 +713,14 @@ class ChromecastButton extends Button {
       }.bind(this);
 
       playerTarget.setVolume = function (volumePosition) {
-          if (this.player_ !== undefined) {
-              return this.player_.volume(volumePosition);
-          } else if (_this.player_ !== undefined) {
-              return _this.player_.volume(volumePosition);
+          if(_this.mDNS && _this.receivers.length > 0){
+
+          } else {
+              if (this.player_ !== undefined) {
+                  return this.player_.volume(volumePosition);
+              } else if (_this.player_ !== undefined) {
+                  return _this.player_.volume(volumePosition);
+              }
           }
       };
 
@@ -821,23 +840,6 @@ class ChromecastButton extends Button {
     if (seconds < 10) seconds = '0' + seconds;
 
     return (isNegative ? '-' : '') + hours + ':' + minutes + ':' + seconds;
-  }
-
-  getClockTimeString(timestamp) {
-      if (!timestamp) return "0:00:00";
-
-      let date = new Date(timestamp * 1000);
-      let hours = date.getHours();
-      let minutes = date.getMinutes();
-      let seconds = date.getSeconds();
-      let ampm = hours >= 12 ? 'PM' : 'AM';
-      hours = hours % 12;
-      // Hour '0' should be '12'
-      hours = hours ? hours : 12;
-      minutes = ('0' + minutes).slice(-2);
-      seconds = ('0' + seconds).slice(-2);
-      let clockTime = hours + ':' + minutes + ':' + seconds + ' ' + ampm;
-      return clockTime;
   }
 
   incrementMediaTime() {

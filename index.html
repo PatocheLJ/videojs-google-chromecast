@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <title>videojs-google-chromecast Demo</title>
   <link href="node_modules/video.js/dist/video-js.css" rel="stylesheet">
-  <link href="dist/plugin.css" rel="stylesheet">
+  <link href="dist/css/plugin.css" rel="stylesheet">
   <script src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js"></script>
 </head>
 <body>
@@ -18,7 +18,9 @@
     (function(window, videojs) {
       var player = videojs('videojs-google-chromecast-player', {
           plugins: {
-              chromecast: {}
+              chromecast: {
+                  mdns: true
+              }
           }
       });
     }(window, window.videojs));

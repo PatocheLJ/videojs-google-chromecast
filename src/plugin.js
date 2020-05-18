@@ -1,8 +1,8 @@
 import videojs from 'video.js';
 import {version as VERSION} from '../package.json';
-import './js/sender';
-import Mdns from 'node-mdns-easy';
+//import './js/libs/sender_base';
 import Chromecast from './js/google-chromecast';
+
 
 /**
  * Google Chromecast for VideoJS
@@ -18,39 +18,18 @@ const chromecast = function chromecast(options) {
         return;
     }
 
-    if(options.mdns !== undefined || options.mdns) {
-        const mdns = new Mdns();
-        const browser = mdns.createBrowser(mdns.getLibrary().tcp('googlecast'));
-
-        browser.on('serviceUp', (service) => {
-            console.log(service);
-        });
-
-        browser.on('serviceDown', (service) => {
-            console.log(service);
-        });
-
-        if (browser.ready) {
-            browser.browse();
-        } else {
-            browser.once('ready', () => {
-                browser.browse();
-            });
-        }
-    }
-
-    const allowedOptions = ["appId", "altSource", "onStop", "onError"];
-    allowedOptions.forEach(opt => {
+    var allowedOptions = ["appId", "altSource", "onStop", "onError"];
+    allowedOptions.forEach(function (opt) {
         if (player.options_.chromecast === undefined) {
             player.options_.chromecast = [];
         }
+
         if (player.options_.chromecast[opt] === undefined) {
             options[opt] = '';
         } else {
             options[opt] = player.options_.chromecast[opt];
         }
     });
-
 
     let googleCast = new Chromecast(player, options);
 };

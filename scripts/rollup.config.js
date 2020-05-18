@@ -6,13 +6,67 @@ const options = {
   globals(defaults) {
     return {
       browser: Object.assign(defaults.browser, {
-        'node-mdns-easy': 'Mdns'
+        'http': 'http',
+        'events': 'events',
+        'dgram': 'dgram',
+        'util': 'util',
+        'buffer': 'buffer',
+        'os': 'os',
+        'crypto': 'crypto',
+        'assert': 'assert',
+        'stream': 'stream',
+        'string_decoder': 'string_decoder',
+        'timers': 'timers',
+        'tls': 'tls',
+        'fs': 'fs',
+        'https': 'https',
+        'url': 'url',
+        'path': 'path',
+        'querystring': 'querystring',
+        'zlib': 'zlib',
+        'buffer-indexof': 'bufferIndexof'
       }),
       module: Object.assign(defaults.module, {
-        'node-mdns-easy': 'Mdns'
+          'http': 'http',
+          'events': 'events',
+          'dgram': 'dgram',
+          'util': 'util',
+          'buffer': 'buffer',
+          'os': 'os',
+          'crypto': 'crypto',
+          'assert': 'assert',
+          'stream': 'stream',
+          'string_decoder': 'string_decoder',
+          'timers': 'timers',
+          'tls': 'tls',
+          'fs': 'fs',
+          'https': 'https',
+          'url': 'url',
+          'path': 'path',
+          'querystring': 'querystring',
+          'zlib': 'zlib',
+          'buffer-indexof': 'bufferIndexof'
       }),
       test: Object.assign(defaults.test, {
-        'node-mdns-easy': 'Mdns'
+          'http': 'http',
+          'events': 'events',
+          'dgram': 'dgram',
+          'util': 'util',
+          'buffer': 'buffer',
+          'os': 'os',
+          'crypto': 'crypto',
+          'assert': 'assert',
+          'stream': 'stream',
+          'string_decoder': 'string_decoder',
+          'timers': 'timers',
+          'tls': 'tls',
+          'fs': 'fs',
+          'https': 'https',
+          'url': 'url',
+          'path': 'path',
+          'querystring': 'querystring',
+          'zlib': 'zlib',
+          'buffer-indexof': 'bufferIndexof'
       })
     };
   }

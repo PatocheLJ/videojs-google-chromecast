@@ -1,5 +1,5 @@
 import videojs from 'video.js';
-import ChromecastButton from './component/control-bar/chromecast-button';
+import ChromecastButton from './component/control-bar/chromecast-button'
 
 let Component = videojs.getComponent('Component');
 let ControlBar = videojs.getComponent('ControlBar');
@@ -10,7 +10,7 @@ class Chromecast extends Component {
   constructor (player, options) {
     super(player, options);
     let buttonChromecast = new ChromecastButton(player, options);
-    window['__onGCastApiAvailable'] = function (isAvailable) {
+    window.__onGCastApiAvailable = function (isAvailable) {
         if (isAvailable) {
             buttonChromecast.initCastPlayer();
         }
