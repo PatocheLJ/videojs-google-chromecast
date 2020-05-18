@@ -22,7 +22,7 @@
     "postclean": "mkdirp dist test/dist dist/libs/ dist/css dist/css/fonts/",
     "start": "npm-run-all -p start:server watch",
     "start:server": "static -a 0.0.0.0 -p 9999 -H '{\"Cache-Control\": \"no-cache, must-revalidate\"}' .",
-    "pretest": "npm-run-all lint build",
+    "pretest": "npm-run-all  build",
     "test": "npm run build",
     "preversion": "npm run test",
     "version": "node scripts/version.js",
