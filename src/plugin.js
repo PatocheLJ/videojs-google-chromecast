@@ -31,7 +31,15 @@ const chromecast = function chromecast(options) {
         }
     });
 
-    let googleCast = new Chromecast(player, options);
+    var googleCast = null;
+
+    if (options.mdns !== undefined && options.mdns) {
+        setTimeout(function(){
+            googleCast = new Chromecast(player, options);
+        }, 500);
+    } else {
+        googleCast = new Chromecast(player, options);
+    }
 };
 
 // Cross-compatibility for Video.js 5 and 6.

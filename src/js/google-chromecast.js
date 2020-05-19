@@ -10,11 +10,16 @@ class Chromecast extends Component {
   constructor (player, options) {
     super(player, options);
     let buttonChromecast = new ChromecastButton(player, options);
-    window.__onGCastApiAvailable = function (isAvailable) {
+    window['__onGCastApiAvailable'] = function (isAvailable) {
         if (isAvailable) {
             buttonChromecast.initCastPlayer();
         }
     };
+
+    if(options.mdns !== undefined && options.mdns){
+      window.__onGCastApiAvailable(true);
+    }
+
   }
 }
 

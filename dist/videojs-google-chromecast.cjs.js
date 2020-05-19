@@ -6,7 +6,6 @@ function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'defau
 var videojs = _interopDefault(require('video.js'));
 var _inheritsLoose = _interopDefault(require('@babel/runtime/helpers/inheritsLoose'));
 var _assertThisInitialized = _interopDefault(require('@babel/runtime/helpers/assertThisInitialized'));
-var ChromecastAPI = _interopDefault(require('chromecast-api'));
 
 var version = "0.0.6";
 
@@ -465,7 +464,7 @@ var ChromecastButton = /*#__PURE__*/function (_Button) {
     _this2.apiSession = null;
     _this2.tryingReconnect = 0;
     _this2.mDNS = false;
-    _this2.receivers = null;
+    _this2.choosenDevice = null;
 
     if (_this2.options.mdns !== undefined && _this2.options.mdns) {
       _this2.mDNS = true;
@@ -497,6 +496,11 @@ var ChromecastButton = /*#__PURE__*/function (_Button) {
   var _proto = ChromecastButton.prototype;
 
   _proto.initCastPlayer = function initCastPlayer() {
+    if (typeof window.cast === undefined) {
+      console.log('it is undefined');
+      return;
+    }
+
     var _this = this;
 
     var options = _this.options;
@@ -519,14 +523,19 @@ var ChromecastButton = /*#__PURE__*/function (_Button) {
     });
 
     if (this.options.mdns !== undefined && this.options.mdns) {
+      var ChromecastAPI = require('chromecast-api');
+
       var client = new ChromecastAPI();
       this.client = client;
+      this.mDNS = true;
+      this.choosenDevice = null;
       this.client.on('device', function (device) {
         if (device !== undefined) {
           _this.receivers.push(device);
+
+          _this.show();
         }
       });
-      console.log(this.client);
     }
 
     this.remotePlayer = new cast.framework.RemotePlayer();
@@ -648,17 +657,14 @@ var ChromecastButton = /*#__PURE__*/function (_Button) {
     var _this3 = this;
 
     if (player.controlBar !== undefined) {
-      var castComponent = document.createElement('google-cast-launcher');
-      castComponent.setAttribute('class', 'vjs-chromecast-button');
-      var jsControlBar = document.getElementsByClassName('vjs-control-bar');
+      this.createGoogleButton();
 
-      if (jsControlBar.length > 0) {
-        jsControlBar[0].appendChild(castComponent);
+      if (this.mDNS) {
+        this.createCustomButton();
       } // Avoids inconsistency in videojs
 
 
-      player.controlBar.chromecastButton = this;
-      player.controlBar.children_.push(this);
+      player.controlBar.chromecastButton = this; //player.controlBar.children_.push(this);
     } else {
       return;
     }
@@ -666,16 +672,40 @@ var ChromecastButton = /*#__PURE__*/function (_Button) {
     this.on(player, 'seeked', function () {
       if (_this3.casting && _this3.apiSession) {
         _this3.seekMedia(_this3.player_.currentTime());
+      } else if (_this3.mDNS && _this3.choosenDevice !== null) {
+        _this3.choosenDevice.on('status', function (status) {
+          console.log(status);
+        });
+
+        _this3.choosenDevice.seekTo(_this3.player_.currentTime(), function (callback) {
+          console.log("seek to position");
+        });
       }
     });
     this.on(player, 'play', function (el) {
       if (_this3.casting && _this3.apiSession) {
         _this3.playerHandler.play();
+      } else if (_this3.mDNS && _this3.choosenDevice !== null) {
+        _this3.choosenDevice.on('status', function (status) {
+          console.log(status);
+        });
+
+        _this3.choosenDevice.resume(function (callback) {
+          console.log("play cast");
+        });
       }
     });
     this.on(player, 'pause', function (el) {
       if (_this3.casting && _this3.apiSession) {
         _this3.playerHandler.pause();
+      } else if (_this3.mDNS && _this3.choosenDevice !== null) {
+        _this3.choosenDevice.on('status', function (status) {
+          console.log(status);
+        });
+
+        _this3.choosenDevice.pause(function (callback) {
+          console.log("pause cast");
+        });
       }
     });
     this.on(player, 'volumechange', function (el) {
@@ -691,6 +721,20 @@ var ChromecastButton = /*#__PURE__*/function (_Button) {
         }
 
         _this3.playerHandler.setVolume(volumeLevel);
+      } else if (_this3.mDNS && _this3.choosenDevice !== null) {
+        var volumeLevel = _this3.player_.volume();
+
+        if (_this3.player_.muted()) {
+          volumeLevel = 0;
+        }
+
+        _this3.choosenDevice.on('status', function (status) {
+          console.log(status);
+        });
+
+        _this3.choosenDevice.setVolume(volumeLevel, function (callback) {
+          console.log("pause cast");
+        });
       }
     });
     this.on(player, 'loadedmetadata', function (el) {
@@ -701,24 +745,105 @@ var ChromecastButton = /*#__PURE__*/function (_Button) {
         _this3.disposed = true;
 
         _this3.stop();
+      } else if (_this3.mDNS && _this3.choosenDevice !== null) {
+        _this3.choosenDevice.on('status', function (status) {
+          console.log(status);
+        });
+
+        _this3.choosenDevice.stop(function (callback) {
+          console.log("stop cast");
+        });
       }
     });
+  };
+
+  _proto.createGoogleButton = function createGoogleButton() {
+    var jsControlBar = document.getElementsByClassName('vjs-control-bar');
+
+    if (document.getElementsByClassName('vjs-chromecast-button').length <= 0) {
+      var castComponent = document.createElement('google-cast-launcher');
+      castComponent.setAttribute('class', 'vjs-chromecast-button vjs-control vjs-button');
+      castComponent.setAttribute('type', 'button');
+
+      if (jsControlBar.length > 0) {
+        jsControlBar[0].appendChild(castComponent);
+      }
+    }
+  };
+
+  _proto.createCustomButton = function createCustomButton() {
+    var _this = this;
+
+    var jsControlBar = document.getElementsByClassName('vjs-control-bar');
+
+    if (document.getElementsByClassName('vjs-chromecast-button-mdns').length <= 0) {
+      var castComponent = document.createElement('button');
+      castComponent.setAttribute('class', 'vjs-chromecast-button-mdns vjs-control vjs-button');
+      castComponent.setAttribute('type', 'button');
+      castComponent.addEventListener('click', function () {
+        _this.findSources();
+
+        if (_this.client === undefined) {
+          var ChromecastAPI = require('chromecast-api');
+
+          var client = new ChromecastAPI();
+          _this.client = client;
+
+          _this.client.on('device', function (device) {
+            if (device !== undefined) {
+              _this.receivers.push(device);
+            }
+          });
+        } //Todo Tooltip like UI before connecting
+
+
+        for (var i = 0; i < _this.receivers.length; i++) {
+          if (_this.receivers[i].friendlyName == "Séjour") {
+            _this.choosenDevice = _this.receivers[i];
+
+            _this.receivers[i].play(_this.sources.src, function (err) {});
+          }
+        }
+      });
+
+      if (jsControlBar.length > 0) {
+        jsControlBar[0].appendChild(castComponent);
+        var span = document.createElement('span');
+        span.setAttribute('class', 'vjs-icon-chromecast');
+        var getCastBtn = document.getElementsByClassName('vjs-chromecast-button-mdns');
+        getCastBtn[0].appendChild(span);
+      }
+    }
   };
 
   _proto.hide = function hide() {
     _Button.prototype.hide.call(this);
 
-    var castButton = document.getElementsByClassName('vjs-chromecast-button');
+    var castButton = castButton = document.getElementsByClassName('vjs-chromecast-button');
 
     if (castButton.length > 0) {
       castButton[0].style.display = 'none';
+    }
+
+    if (this.mDNS) {
+      castButton = document.getElementsByClassName('vjs-chromecast-button-mdns');
+
+      if (castButton.length > 0) {
+        castButton[0].style.display = 'none';
+      }
     }
   };
 
   _proto.show = function show() {
     _Button.prototype.show.call(this);
 
-    var castButton = document.getElementsByClassName('vjs-chromecast-button');
+    var castButton = null;
+
+    if (this.mDNS) {
+      castButton = document.getElementsByClassName('vjs-chromecast-button-mdns');
+    } else {
+      castButton = document.getElementsByClassName('vjs-chromecast-button');
+    }
 
     if (castButton.length > 0) {
       castButton[0].style.display = 'block';
@@ -726,6 +851,10 @@ var ChromecastButton = /*#__PURE__*/function (_Button) {
   };
 
   _proto.buildCSSClass = function buildCSSClass() {
+    if (this.mDNS) {
+      return "vjs-chromecast-button-mdns " + _Button.prototype.buildCSSClass.call(this, this);
+    }
+
     return "vjs-chromecast-button " + _Button.prototype.buildCSSClass.call(this, this);
   };
 
@@ -775,7 +904,8 @@ var ChromecastButton = /*#__PURE__*/function (_Button) {
   ;
 
   _proto.setupRemotePlayer = function setupRemotePlayer() {
-    // Triggers when the media info or the player state changes
+    console.log(this.remotePlayerController); // Triggers when the media info or the player state changes
+
     this.remotePlayerController.addEventListener(cast.framework.RemotePlayerEventType.MEDIA_INFO_CHANGED, function (event) {
       var session = cast.framework.CastContext.getInstance().getCurrentSession();
 
@@ -1274,11 +1404,15 @@ var Chromecast = /*#__PURE__*/function (_Component) {
     _this = _Component.call(this, player, options) || this;
     var buttonChromecast = new ChromecastButton(player, options);
 
-    window.__onGCastApiAvailable = function (isAvailable) {
+    window['__onGCastApiAvailable'] = function (isAvailable) {
       if (isAvailable) {
         buttonChromecast.initCastPlayer();
       }
     };
+
+    if (options.mdns !== undefined && options.mdns) {
+      window.__onGCastApiAvailable(true);
+    }
 
     return _this;
   }
@@ -1323,7 +1457,15 @@ var chromecast = function chromecast(options) {
       options[opt] = player.options_.chromecast[opt];
     }
   });
-  var googleCast = new Chromecast(player, options);
+  var googleCast = null;
+
+  if (options.mdns !== undefined && options.mdns) {
+    setTimeout(function () {
+      googleCast = new Chromecast(player, options);
+    }, 500);
+  } else {
+    googleCast = new Chromecast(player, options);
+  }
 }; // Cross-compatibility for Video.js 5 and 6.
 
 
