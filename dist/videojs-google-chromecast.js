@@ -1,10 +1,10 @@
 /**
  * videojs-google-chromecast
- * @version 0.0.8
+ * @version 0.0.9
  * @copyright 2020 mikadoplus <plo@mikadoplus.lu>
  * @license UNLICENSED
  */
-/*! @name videojs-google-chromecast @version 0.0.8 @license UNLICENSED */
+/*! @name videojs-google-chromecast @version 0.0.9 @license UNLICENSED */
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('video.js/dist/alt/video.core.novtt.min')) :
   typeof define === 'function' && define.amd ? define(['video.js/dist/alt/video.core.novtt.min'], factory) :
@@ -120,7 +120,7 @@
         this.container = document.createElement('div');
         this.container.setAttribute('class', 'ReactModalPortal');
         this.container.setAttribute('id', 'containerModal');
-        this.contentModal = '' + '<div id="chromecastModal" class="ReactModal__Overlay ReactModal__Overlay--after-open modal-overlay chromecastModal" tabIndex="-1" role="dialog">' + '<section class="card">' + '<button id="closeCast" class="button button--close closeCast" type="button">' + '<span class="button__content">' + '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="icon icon--X"><g><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></g></svg>' + '</span>' + '</button>' + '<div class="card__header--between">' + '<div class="card__section--flex">' + '<div>' + '<h2 className="card__title">Cast to...</h2>' + '</div>' + '</div>' + '<div></div>' + '</div>' + '<div class="card__main-actions">';
+        this.contentModal = '' + '<div id="chromecastModal" class="chromecastModal ReactModal__Overlay ReactModal__Overlay--after-open modal-overlay">' + '<div class="ReactModal__Content ReactModal__Content--after-open modal modal--card-internal" tabIndex="-1" role="dialog">' + '<button id="closeCast" class="button button--close closeCast" type="button">' + '<span class="button__content">' + '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="icon icon--X"><g><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></g></svg>' + '</span>' + '</button>' + '<section class="card">' + '<div class="card__header--between">' + '<div class="card__title-section">' + '<div>' + '<h2 className="card__title">Cast to...</h2>' + '</div>' + '</div>' + '<div></div>' + '</div>' + '<div class="card__main-actions">';
         var loader = '<div class="castLoader"></div>';
         this.client.on('device', function (device) {
           if (device !== undefined) {
@@ -168,7 +168,7 @@
           ++this.tryingReconnect;
           this.setTimeout(this.initSearchProcess, this.timePerAttempt);
         } else {
-          this.contentModal += '</div>' + '</section>' + '</div>';
+          this.contentModal += '</div>' + '</section>' + '</div>' + '</div>';
           this.container.innerHTML = this.contentModal;
           this.remotePlayer = new cast.framework.RemotePlayer();
           this.remotePlayerController = new cast.framework.RemotePlayerController(this.remotePlayer);
@@ -181,7 +181,7 @@
         if (this.receivers === undefined || this.receivers.length <= 0) {
           videojs.log('Cast APIs not available. Max reconnect attempt');
         } else {
-          this.contentModal += '</div>' + '</section>' + '</div>';
+          this.contentModal += '</div>' + '</section>' + '</div>' + '</div>';
           this.container.innerHTML = this.contentModal;
           this.remotePlayer = new cast.framework.RemotePlayer();
           this.remotePlayerController = new cast.framework.RemotePlayerController(this.remotePlayer);
@@ -1074,7 +1074,7 @@
     videojs.registerComponent('Chromecast', Chromecast);
   }
 
-  var version = "0.0.8";
+  var version = "0.0.9";
 
   /**
    * Google Chromecast for VideoJS
