@@ -1,3 +1,6 @@
+<a name="0.0.9"></a>
+## [0.0.9](https://github.com/mikadoplus/videojs-google-chromecast/compare/v0.0.8...v0.0.9) (2020-05-26)
+
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
