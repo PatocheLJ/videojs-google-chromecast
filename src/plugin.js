@@ -1,8 +1,7 @@
-import videojs from 'video.js';
-import {version as VERSION} from '../package.json';
-//import './js/libs/sender_base';
-import Chromecast from './js/google-chromecast';
+import videojs from 'video.js/dist/alt/video.core.novtt.min'
+import Chromecast from './js/google-chromecast'
 
+import { version as VERSION } from '../package.json'
 
 /**
  * Google Chromecast for VideoJS
@@ -11,46 +10,41 @@ import Chromecast from './js/google-chromecast';
  * @param    {Object} [options={}]
  *           An object of options left to the plugin author to define.
  */
-const chromecast = function chromecast(options) {
-    let player = this;
+const chromecast = function (options) {
+  const player = this
 
-    if (options === false || (options && options.enabled === false)) {
-        return;
+  if (options === false || (options && options.enabled === false)) {
+    return
+  }
+
+  var allowedOptions = ['appId', 'altSource', 'metadata', 'searchAttempts', 'timePerAttempt', 'onStop', 'onError']
+  allowedOptions.forEach(function (opt) {
+    if (player.options_.chromecast === undefined) {
+      player.options_.chromecast = []
     }
 
-    var allowedOptions = ["appId", "altSource", "onStop", "onError"];
-    allowedOptions.forEach(function (opt) {
-        if (player.options_.chromecast === undefined) {
-            player.options_.chromecast = [];
-        }
-
-        if (player.options_.chromecast[opt] === undefined) {
-            options[opt] = '';
-        } else {
-            options[opt] = player.options_.chromecast[opt];
-        }
-    });
-
-    var googleCast = null;
-
-    if (options.mdns !== undefined && options.mdns) {
-        setTimeout(function(){
-            googleCast = new Chromecast(player, options);
-        }, 500);
+    if (player.options_.chromecast[opt] === undefined) {
+      options[opt] = ''
     } else {
-        googleCast = new Chromecast(player, options);
+      options[opt] = player.options_.chromecast[opt]
     }
-};
+  })
 
-// Cross-compatibility for Video.js 5 and 6.
-const registerPlugin = videojs.registerPlugin || videojs.plugin;
+  if (options.videojs != undefined) {
+      var videojs = options.videojs;
+      const ChromecastTech = require('../src/js/tech/chromecast-tech')(videojs)
 
-// Register the plugin with video.js, avoid double registration
-if (typeof videojs.getPlugin('chromecast') === 'undefined') {
-  registerPlugin('chromecast', chromecast);
+      var googleChromecast = new Chromecast(player, options)
+
+  }
 }
 
-// Include the version number.
-chromecast.VERSION = VERSION;
+const registerPlugin = videojs.registerPlugin || videojs.plugin
+
+if (typeof videojs.getPlugin('chromecast') === 'undefined') {
+  registerPlugin('chromecast', chromecast)
+}
+
+chromecast.VERSION = VERSION
 
 export default chromecast;

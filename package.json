@@ -1,7 +1,7 @@
 {
   "name": "videojs-google-chromecast",
   "homepage": "https://github.com/mikadoplus/videojs-google-chromecast",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Chromecast plugin for videojs, adapted for v7.*",
   "main": "dist/videojs-google-chromecast.cjs.js",
   "module": "dist/videojs-google-chromecast.es.js",
@@ -63,8 +63,7 @@
     "test/"
   ],
   "dependencies": {
-    "chromecast-api": "github:mikadoplus/chromecast-api",
-    "global": "^4.4.0",
+    "global": "latest",
     "video.js": "^7.7.6"
   },
   "devDependencies": {
@@ -76,20 +75,24 @@
     "@rollup/plugin-json": "^4.0.3",
     "@rollup/plugin-multi-entry": "^3.0.1",
     "@rollup/plugin-node-resolve": "^7.1.3",
+    "@stream-io/rollup-plugin-node-builtins": "github:GetStream/rollup-plugin-node-builtins",
     "@videojs/generator-helpers": "^1.1.0",
     "acorn": "^7.2.0",
     "babel-eslint": "^10.1.0",
     "babel-plugin-external-helpers": "^6.22.0",
     "babel-plugin-transform-object-assign": "^6.22.0",
     "bannerize": "^1.1.4",
+    "chromecast-api": "github:mikadoplus/chromecast-api",
     "conventional-changelog-cli": "^2.0.34",
     "conventional-changelog-videojs": "^3.0.0",
     "core-js": "^3.6.5",
+    "eslint": "^6.8.0",
     "eslint-plugin-import": "^2.20.2",
     "fsevents": "^2.1.3",
+    "http": "0.0.1-security",
     "husky": "^4.2.5",
     "install": "^0.13.0",
-    "karma": "^5.0.8",
+    "karma": "^4.4.1",
     "karma-qunit": "^4.1.1",
     "mem": "^4.3.0",
     "minimist": "^1.2.5",
@@ -103,10 +106,12 @@
     "postcss-cli": "^7.1.1",
     "postcss-scss": "^2.1.1",
     "rimraf": "^3.0.2",
-    "rollup": "^2.10.3",
+    "rollup": "^1.32.1",
     "rollup-plugin-node-builtins": "^2.1.2",
+    "rollup-plugin-node-globals": "^1.4.0",
     "semver": "^7.3.2",
     "sinon": "^9.0.2",
+    "standard": "latest",
     "videojs-generate-karma-config": "^5.3.1",
     "videojs-generate-rollup-config": "^5.0.2",
     "videojs-standard": "^8.0.4"
@@ -114,7 +119,7 @@
   "eslintConfig": {
     "env": {
       "browser": true,
-      "node": false
+      "node": true
     }
   }
 }

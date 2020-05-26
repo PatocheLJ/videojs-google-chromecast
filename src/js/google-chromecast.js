@@ -1,37 +1,34 @@
-import videojs from 'video.js';
+/**
+ * @file google-chromecast.js
+ */
+import videojs from 'video.js/dist/alt/video.core.novtt.min'
 import ChromecastButton from './component/control-bar/chromecast-button'
 
-let Component = videojs.getComponent('Component');
-let ControlBar = videojs.getComponent('ControlBar');
-let Button = videojs.getComponent('Button');
-let Tech = videojs.getComponent('Tech');
-
+const Component = videojs.getComponent('Component')
 class Chromecast extends Component {
-  constructor (player, options) {
-    super(player, options);
-    let buttonChromecast = new ChromecastButton(player, options);
-    window['__onGCastApiAvailable'] = function (isAvailable) {
-        if (isAvailable) {
-            buttonChromecast.initCastPlayer();
+    constructor (player, options) {
+        super(player, options)
+
+        const buttonChromecast = new ChromecastButton(player, options)
+
+        window.__onGCastApiAvailable = function (isAvailable) {
+            if (isAvailable) {
+                buttonChromecast.initCastPlayer(player, options)
+            }
         }
-    };
 
-    if(options.mdns !== undefined && options.mdns){
-      window.__onGCastApiAvailable(true);
+        if (options.mdns !== undefined && options.mdns) {
+            window.__onGCastApiAvailable(true)
+        }
     }
-
-  }
 }
 
-Chromecast.prototype.options_ = {};
+Chromecast.prototype.options_ = {}
+videojs.options.children.push('chromecast')
+videojs.addLanguage('en', { 'CASTING TO': 'CASTING TO' })
 
-videojs.options.children.push('chromecast');
-
-videojs.addLanguage('en', { 'CASTING TO': 'CASTING TO' });
-
-// Register the compnent with video.js, avoid double registration
-if (typeof Component.getComponent('Chromecast') === 'undefined') {
-  Component.registerComponent('Chromecast', Chromecast);
+if (typeof videojs.getComponent('Chromecast') === 'undefined') {
+    videojs.registerComponent('Chromecast', Chromecast);
 }
 
 export default Chromecast;
