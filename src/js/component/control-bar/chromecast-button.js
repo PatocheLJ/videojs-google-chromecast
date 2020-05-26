@@ -88,15 +88,16 @@ class ChromecastButton extends Button {
             this.container.setAttribute('class', 'ReactModalPortal')
             this.container.setAttribute('id', 'containerModal')
             this.contentModal = '' +
-                '<div id="chromecastModal" class="ReactModal__Overlay ReactModal__Overlay--after-open modal-overlay chromecastModal" tabIndex="-1" role="dialog">' +
-                '<section class="card">' +
+                '<div id="chromecastModal" class="chromecastModal ReactModal__Overlay ReactModal__Overlay--after-open modal-overlay">' +
+                '<div class="ReactModal__Content ReactModal__Content--after-open modal modal--card-internal" tabIndex="-1" role="dialog">' +
                 '<button id="closeCast" class="button button--close closeCast" type="button">' +
                 '<span class="button__content">' +
                 '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="icon icon--X"><g><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></g></svg>' +
                 '</span>' +
                 '</button>' +
+                '<section class="card">' +
                 '<div class="card__header--between">' +
-                '<div class="card__section--flex">' +
+                '<div class="card__title-section">' +
                 '<div>' +
                 '<h2 className="card__title">Cast to...</h2>' +
                 '</div>' +
@@ -156,7 +157,7 @@ class ChromecastButton extends Button {
                 ++this.tryingReconnect
                 this.setTimeout(this.initSearchProcess, this.timePerAttempt)
             } else {
-                this.contentModal += '</div>' + '</section>' + '</div>'
+                this.contentModal += '</div>' + '</section>' + '</div>' + '</div>'
                 this.container.innerHTML = this.contentModal
 
                 this.remotePlayer = new cast.framework.RemotePlayer()
@@ -172,7 +173,7 @@ class ChromecastButton extends Button {
             if (this.receivers === undefined || this.receivers.length <= 0) {
                 videojs.log('Cast APIs not available. Max reconnect attempt')
             } else {
-                this.contentModal += '</div>' + '</section>' + '</div>'
+                this.contentModal += '</div>' + '</section>' + '</div>' + '</div>'
                 this.container.innerHTML = this.contentModal
 
                 this.remotePlayer = new cast.framework.RemotePlayer()

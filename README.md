@@ -19,7 +19,7 @@ Chromecast plugin for videojs, adapted for v7.*
 ## Installation
 
 ```sh
-npm install --save @videojs-google-chromecast/videojs-google-chromecast
+npm install --save mikadoplus/videojs-google-chromecast
 ```
 
 ## Usage
@@ -50,7 +50,7 @@ var videojs = require('video.js');
 // The actual plugin function is exported by this module, but it is also
 // attached to the `Player.prototype`; so, there is no need to assign it
 // to a variable.
-require('@videojs-google-chromecast/videojs-google-chromecast');
+require('mikadoplus/videojs-google-chromecast');
 
 var player = videojs('my-video');
 
@@ -62,7 +62,7 @@ player.googleChromecast();
 When using with RequireJS (or another AMD library), get the script in whatever way you prefer and `require` the plugin as you normally would:
 
 ```js
-require(['video.js', '@videojs-google-chromecast/videojs-google-chromecast'], function(videojs) {
+require(['video.js', 'mikadoplus/videojs-google-chromecast'], function(videojs) {
   var player = videojs('my-video');
 
   player.googleChromecast();

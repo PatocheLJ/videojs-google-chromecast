@@ -1,3 +1,14 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [CONTRIBUTING](#contributing)
+  - [Getting Started](#getting-started)
+    - [Making Changes](#making-changes)
+    - [Running Tests](#running-tests)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # CONTRIBUTING
 
 ## Getting Started
