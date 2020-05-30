@@ -108,10 +108,10 @@ class ChromecastButton extends Button {
 
             var loader = '<div class="castLoader"></div>'
 
-            this.client.on('device', function (device) {
+            this.client.on('device', (device) => {
                 if (device !== undefined) {
-                    _this.receivers.push(device)
-                    _this.contentModal += '<fieldset-section id="' + device.name + '" class="selectCast"><div id="' + device.name + '" class="castFriendlyName">' + device.friendlyName + '</div>' + loader + '</fieldset-section>'
+                    this.receivers.push(device)
+                    this.contentModal += '<fieldset-section id="' + device.name + '" class="selectCast"><div id="' + device.name + '" class="castFriendlyName">' + device.friendlyName + '</div>' + loader + '</fieldset-section>'
                 }
             })
 
@@ -139,10 +139,9 @@ class ChromecastButton extends Button {
             this.remotePlayer = new cast.framework.RemotePlayer()
             this.remotePlayerController = new cast.framework.RemotePlayerController(this.remotePlayer)
             this.remotePlayerController.addEventListener(
-                cast.framework.RemotePlayerEventType.IS_CONNECTED_CHANGED,
-                function (e) {
+                cast.framework.RemotePlayerEventType.IS_CONNECTED_CHANGED, (e) => {
                     this.switchPlayer(e.value)
-                }.bind(this)
+                }
             )
             this.apiInitialized = true
             this.initializeUI(player)
@@ -308,22 +307,22 @@ class ChromecastButton extends Button {
     }
 
     createCustomButton () {
-        var _this = this
         var jsControlBar = document.getElementsByClassName('vjs-control-bar')
         if (document.getElementsByClassName('vjs-chromecast-button-mdns').length <= 0) {
             var castComponent = document.createElement('button')
             castComponent.setAttribute('class', 'vjs-chromecast-button-mdns vjs-control vjs-button')
             castComponent.setAttribute('type', 'button')
-            castComponent.addEventListener('click', function () {
-                _this.findSources()
-                _this.prepareMediaForCast(function () {
-                    document.body.appendChild(_this.container)
-                    document.getElementById('closeCast').addEventListener('click', _this.closeModal)
-                    document.getElementById('chromecastModal').addEventListener('click', _this.closeModalFromBack)
+            castComponent.addEventListener('click', () => {
+                consiole.log(this)
+                this.findSources()
+                this.prepareMediaForCast(() => {
+                    document.body.appendChild(this.container)
+                    document.getElementById('closeCast').addEventListener('click', this.closeModal)
+                    document.getElementById('chromecastModal').addEventListener('click', this.closeModalFromBack)
                     var castSelection = document.getElementsByClassName('selectCast')
                     for (var i = 0; i < castSelection.length; i++) {
                         (function (index) {
-                            castSelection[index].addEventListener('click', _this.selectCast.bind(_this))
+                            castSelection[index].addEventListener('click', this.selectCast.bind(this))
                         })(i)
                     }
                 })
@@ -457,14 +456,14 @@ class ChromecastButton extends Button {
         this.playerStateBeforeSwitch = this.playerState
 
         if (value) {
-            this.prepareMediaForCast(function () {
+            this.prepareMediaForCast(() => {
                 if (cast && cast.framework && this.remotePlayer.isConnected) {
                     this.playerHandler.pause()
                     this.setupRemotePlayer()
                 } else {
                     this.setupLocalPlayer()
                 }
-            }.bind(this))
+            })
         } else {
             this.prepareMediaForCast(this.setupLocalPlayer.bind(this))
         }
@@ -476,8 +475,7 @@ class ChromecastButton extends Button {
     setupRemotePlayer () {
         // Triggers when the media info or the player state changes
         this.remotePlayerController.addEventListener(
-            cast.framework.RemotePlayerEventType.MEDIA_INFO_CHANGED,
-            function (event) {
+            cast.framework.RemotePlayerEventType.MEDIA_INFO_CHANGED, (event) => {
                 const session = cast.framework.CastContext.getInstance().getCurrentSession()
                 if (!session) {
                     this.mediaInfo = null
@@ -501,7 +499,7 @@ class ChromecastButton extends Button {
                 }
 
                 this.playerHandler.updateDisplay()
-            }.bind(this)
+            }
         )
 
         this.remotePlayerController.addEventListener(
@@ -512,69 +510,67 @@ class ChromecastButton extends Button {
         )
 
         this.remotePlayerController.addEventListener(
-            cast.framework.RemotePlayerEventType.IS_PAUSED_CHANGED,
-            function () {
+            cast.framework.RemotePlayerEventType.IS_PAUSED_CHANGED, () => {
                 if (this.remotePlayer.isPaused) {
                     this.playerHandler.pause()
                 } else if (this.playerState !== PLAYER_STATE.PLAYING) {
                     this.playerHandler.play()
                 }
-            }.bind(this)
+            }
         )
 
         this.remotePlayerController.addEventListener(
-            cast.framework.RemotePlayerEventType.IS_MUTED_CHANGED,
-            function () {
+            cast.framework.RemotePlayerEventType.IS_MUTED_CHANGED, () => {
                 if (this.remotePlayer.isMuted) {
                     this.playerHandler.mute()
                 } else {
                     this.playerHandler.unMute()
                 }
-            }.bind(this)
+            }
         )
 
         this.remotePlayerController.addEventListener(
-            cast.framework.RemotePlayerEventType.VOLUME_LEVEL_CHANGED,
-            function () {
+            cast.framework.RemotePlayerEventType.VOLUME_LEVEL_CHANGED, () => {
                 var newVolume = this.remotePlayer.volumeLevel
-                this.player_.setVolume(newVolume)
-            }.bind(this)
+                console.log(this.player_)
+                console.log(this.player)
+                if (this.isFunction(this.player_.setVolume)) {
+                    this.player_.setVolume(newVolume)
+                } else {
+                    this.player_.setVolume = newVolume
+                }
+            }
         )
 
         this.remotePlayerController.addEventListener(
-            cast.framework.RemotePlayerEventType.IS_PLAYING_BREAK_CHANGED,
-            function (event) {
+            cast.framework.RemotePlayerEventType.IS_PLAYING_BREAK_CHANGED, (event) => {
                 this.isPlayingBreak(event.value)
-            }.bind(this)
+            }
         )
 
         this.remotePlayerController.addEventListener(
-            cast.framework.RemotePlayerEventType.WHEN_SKIPPABLE_CHANGED,
-            function (event) {
+            cast.framework.RemotePlayerEventType.WHEN_SKIPPABLE_CHANGED, (event) => {
                 this.onWhenSkippableChanged(event.value)
-            }.bind(this)
+            }
         )
 
         this.remotePlayerController.addEventListener(
-            cast.framework.RemotePlayerEventType.CURRENT_BREAK_CLIP_TIME_CHANGED,
-            function (event) {
+            cast.framework.RemotePlayerEventType.CURRENT_BREAK_CLIP_TIME_CHANGED, (event) => {
                 this.onCurrentBreakClipTimeChanged(event.value)
-            }.bind(this)
+            }
         )
 
         this.remotePlayerController.addEventListener(
-            cast.framework.RemotePlayerEventType.BREAK_CLIP_ID_CHANGED,
-            function (event) {
+            cast.framework.RemotePlayerEventType.BREAK_CLIP_ID_CHANGED, (event) => {
                 this.onBreakClipIdChanged(event.value)
-            }.bind(this)
+            }
         )
 
         this.remotePlayerController.addEventListener(
-            cast.framework.RemotePlayerEventType.LIVE_SEEKABLE_RANGE_CHANGED,
-            function (event) {
+            cast.framework.RemotePlayerEventType.LIVE_SEEKABLE_RANGE_CHANGED, (event) => {
                 videojs.log('LIVE_SEEKABLE_RANGE_CHANGED')
                 this.liveSeekableRange = event.value
-            }.bind(this)
+            }
         )
 
         // This object will implement PlayerHandler callbacks with
@@ -627,7 +623,7 @@ class ChromecastButton extends Button {
                     }.bind(this)
                 )
             }.bind(this))
-        }
+        }.bind(this)
 
         playerTarget.isMediaLoaded = function () {
             const session = cast.framework.CastContext.getInstance().getCurrentSession()
@@ -777,7 +773,6 @@ class ChromecastButton extends Button {
     setupLocalPlayer () {
         // This object will implement PlayerHandler callbacks with localPlayer
         var playerTarget = {}
-        var _this = this
 
         playerTarget.play = function () {
             videojs.log('local player play')
@@ -806,24 +801,20 @@ class ChromecastButton extends Button {
         playerTarget.getCurrentMediaTime = function () {
             if (this.player_ !== undefined) {
                 return this.player_.currentTime()
-            } else if (_this.player_ !== undefined) {
-                return _this.player_.currentTime()
             }
             return 0
-        }
+        }.bind(this)
 
         playerTarget.getMediaDuration = function () {
             if (this.player_ !== undefined) {
                 return this.player_.duration()
-            } else if (_this.player_ !== undefined) {
-                return _this.player_.duration()
             }
             return 0
-        }
+        }.bind(this)
 
         playerTarget.updateDisplay = function () {
             // Do we need to change something in front view ?
-        }
+        }.bind(this)
 
         playerTarget.updateCurrentTimeDisplay = function () {
             // Increment for local playback
@@ -848,42 +839,32 @@ class ChromecastButton extends Button {
         playerTarget.setVolume = function (volumePosition) {
             if (this.player_ !== undefined) {
                 return this.player_.volume(volumePosition)
-            } else if (_this.player_ !== undefined) {
-                return _this.player_.volume(volumePosition)
             }
-        }
+        }.bind(this)
 
         playerTarget.mute = function () {
             if (this.player_ !== undefined) {
                 return this.player_.mute(true)
-            } else if (_this.player_ !== undefined) {
-                return _this.player_.mute(true)
             }
-        }
+        }.bind(this)
 
         playerTarget.unMute = function () {
             if (this.player_ !== undefined) {
                 return this.player_.mute(false)
-            } else if (_this.player_ !== undefined) {
-                return _this.player_.mute(false)
             }
-        }
+        }.bind(this)
 
         playerTarget.isMuted = function () {
             if (this.player_ !== undefined) {
                 return this.player_.mute()
-            } else if (_this.player_ !== undefined) {
-                return _this.player_.mute()
             }
-        }
+        }.bind(this)
 
         playerTarget.seekTo = function (time) {
             if (this.player_ !== undefined) {
                 return this.player_.currentTime(time)
-            } else if (_this.player_ !== undefined) {
-                return _this.player_.currentTime(time)
             }
-        }
+        }.bind(this)
 
         this.playerHandler.setTarget(playerTarget)
 
@@ -1027,6 +1008,10 @@ class ChromecastButton extends Button {
         } else if (this.mediaDuration > 0) {
             this.endPlayback()
         }
+    }
+
+    isFunction(functionToCheck) {
+        return functionToCheck && {}.toString.call(functionToCheck) === '[object Function]';
     }
 }
 

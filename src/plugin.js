@@ -1,5 +1,6 @@
 import videojs from 'video.js/dist/alt/video.core.novtt.min'
 import Chromecast from './js/google-chromecast'
+import ChromecastTechBis from './js/tech/chromecast-tech-og'
 
 import { version as VERSION } from '../package.json'
 
@@ -35,7 +36,8 @@ const chromecast = function (options) {
       const ChromecastTech = require('../src/js/tech/chromecast-tech')(videojs)
 
       var googleChromecast = new Chromecast(player, options)
-
+  } else {
+      var googleChromecast = new Chromecast(player, options)
   }
 }
 
