@@ -1,10 +1,10 @@
 /**
  * videojs-google-chromecast
- * @version 0.1.0
+ * @version 0.1.2
  * @copyright 2020 mikadoplus <plo@mikadoplus.lu>
  * @license UNLICENSED
  */
-/*! @name videojs-google-chromecast @version 0.1.0 @license UNLICENSED */
+/*! @name videojs-google-chromecast @version 0.1.2 @license UNLICENSED */
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('video.js/dist/alt/video.core.novtt.min')) :
   typeof define === 'function' && define.amd ? define(['video.js/dist/alt/video.core.novtt.min'], factory) :
@@ -339,8 +339,6 @@
         castComponent.setAttribute('class', 'vjs-chromecast-button-mdns vjs-control vjs-button');
         castComponent.setAttribute('type', 'button');
         castComponent.addEventListener('click', function () {
-          consiole.log(_this4);
-
           _this4.findSources();
 
           _this4.prepareMediaForCast(function () {
@@ -570,8 +568,6 @@
       });
       this.remotePlayerController.addEventListener(cast.framework.RemotePlayerEventType.VOLUME_LEVEL_CHANGED, function () {
         var newVolume = _this7.remotePlayer.volumeLevel;
-        console.log(_this7.player_);
-        console.log(_this7.player);
 
         if (_this7.isFunction(_this7.player_.setVolume)) {
           _this7.player_.setVolume(newVolume);
@@ -1467,7 +1463,7 @@
     Tech.registerTech('ChromecastTech', ChromecastTech);
   }
 
-  var version = "0.1.0";
+  var version = "0.1.2";
 
   /**
    * Google Chromecast for VideoJS

@@ -313,7 +313,6 @@ class ChromecastButton extends Button {
             castComponent.setAttribute('class', 'vjs-chromecast-button-mdns vjs-control vjs-button')
             castComponent.setAttribute('type', 'button')
             castComponent.addEventListener('click', () => {
-                consiole.log(this)
                 this.findSources()
                 this.prepareMediaForCast(() => {
                     document.body.appendChild(this.container)
@@ -532,8 +531,6 @@ class ChromecastButton extends Button {
         this.remotePlayerController.addEventListener(
             cast.framework.RemotePlayerEventType.VOLUME_LEVEL_CHANGED, () => {
                 var newVolume = this.remotePlayer.volumeLevel
-                console.log(this.player_)
-                console.log(this.player)
                 if (this.isFunction(this.player_.setVolume)) {
                     this.player_.setVolume(newVolume)
                 } else {

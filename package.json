@@ -1,7 +1,7 @@
 {
   "name": "videojs-google-chromecast",
   "homepage": "https://github.com/mikadoplus/videojs-google-chromecast",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Chromecast plugin for videojs, adapted for v7.*",
   "main": "dist/videojs-google-chromecast.cjs.js",
   "module": "dist/videojs-google-chromecast.es.js",
@@ -63,13 +63,15 @@
     "test/"
   ],
   "dependencies": {
+    "chromecast-api": "github:mikadoplus/chromecast-api",
     "castv2": "github:mikadoplus/node-castv2",
     "castv2-client": "github:mikadoplus/node-castv2-client",
-    "chrome-dgram": "^3.0.5",
-    "global": "latest",
     "multicast-dns": "github:mikadoplus/multicast-dns",
     "node-ssdp": "github:mikadoplus/node-ssdp",
+    "chrome-dgram": "^3.0.5",
+    "dgram": "^1.0.1",
     "tls": "0.0.1",
+    "global": "latest",
     "video.js": "^7.7.6"
   },
   "devDependencies": {
@@ -88,7 +90,6 @@
     "babel-plugin-external-helpers": "^6.22.0",
     "babel-plugin-transform-object-assign": "^6.22.0",
     "bannerize": "^1.1.4",
-    "chromecast-api": "github:mikadoplus/chromecast-api",
     "conventional-changelog-cli": "^2.0.34",
     "conventional-changelog-videojs": "^3.0.0",
     "core-js": "^3.6.5",

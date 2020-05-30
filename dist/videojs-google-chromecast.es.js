@@ -1,4 +1,4 @@
-/*! @name videojs-google-chromecast @version 0.1.0 @license UNLICENSED */
+/*! @name videojs-google-chromecast @version 0.1.2 @license UNLICENSED */
 import videojs from 'video.js/dist/alt/video.core.novtt.min';
 import _inheritsLoose from '@babel/runtime/helpers/inheritsLoose';
 import _assertThisInitialized from '@babel/runtime/helpers/assertThisInitialized';
@@ -311,8 +311,6 @@ var ChromecastButton = /*#__PURE__*/function (_Button) {
       castComponent.setAttribute('class', 'vjs-chromecast-button-mdns vjs-control vjs-button');
       castComponent.setAttribute('type', 'button');
       castComponent.addEventListener('click', function () {
-        consiole.log(_this4);
-
         _this4.findSources();
 
         _this4.prepareMediaForCast(function () {
@@ -542,8 +540,6 @@ var ChromecastButton = /*#__PURE__*/function (_Button) {
     });
     this.remotePlayerController.addEventListener(cast.framework.RemotePlayerEventType.VOLUME_LEVEL_CHANGED, function () {
       var newVolume = _this7.remotePlayer.volumeLevel;
-      console.log(_this7.player_);
-      console.log(_this7.player);
 
       if (_this7.isFunction(_this7.player_.setVolume)) {
         _this7.player_.setVolume(newVolume);
@@ -1439,7 +1435,7 @@ if (typeof Tech.getTech('ChromecastTech') === 'undefined') {
   Tech.registerTech('ChromecastTech', ChromecastTech);
 }
 
-var version = "0.1.0";
+var version = "0.1.2";
 
 /**
  * Google Chromecast for VideoJS
