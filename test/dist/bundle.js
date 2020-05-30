@@ -1,4 +1,4 @@
-/*! @name videojs-google-chromecast @version 0.0.9 @license UNLICENSED */
+/*! @name videojs-google-chromecast @version 0.1.0 @license UNLICENSED */
 (function (QUnit, sinon, videojs, videojs$1) {
 	'use strict';
 
@@ -19762,7 +19762,7 @@
 	  cov_ilxslb9od.b[41][1]++;
 	}
 
-	var version = "0.0.9";
+	var version = "0.1.0";
 
 	var cov_279kbuek1j = function () {
 	  var path = '/Users/plo/Blockchain.nosync/LBRY/App/plugins/videojs-google-chromecast/src/plugin.js',
