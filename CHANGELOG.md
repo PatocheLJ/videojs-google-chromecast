@@ -1,3 +1,6 @@
+<a name="0.1.1"></a>
+## [0.1.1](https://github.com/mikadoplus/videojs-google-chromecast/compare/v0.1.0...v0.1.1) (2020-05-30)
+
 <a name="0.1.0"></a>
 # [0.1.0](https://github.com/mikadoplus/videojs-google-chromecast/compare/v0.0.9...v0.1.0) (2020-05-30)
 
