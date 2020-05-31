@@ -325,7 +325,7 @@ var ChromecastButton = /*#__PURE__*/function (_Button) {
 
           for (var i = 0; i < castSelection.length; i++) {
             (function (index) {
-              castSelection[index].addEventListener('click', this.selectCast.bind(this));
+              castSelection[index].addEventListener('click', _this4.selectCast.bind(_this4));
             })(i);
           }
         });

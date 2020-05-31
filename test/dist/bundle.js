@@ -60,7 +60,7 @@
 
 	var cov_1iiyehkoov = function () {
 	  var path = '/Users/plo/Blockchain.nosync/LBRY/App/plugins/videojs-google-chromecast/src/js/component/control-bar/chromecast-button.js',
-	      hash = 'c4247f78814c255ab58ab1b6f8f3039094fa19b2',
+	      hash = 'c19a16142b51a187f0f8b151334a1e5ee5a22f36',
 	      Function = function () {}.constructor,
 	      global = new Function('return this')(),
 	      gcv = '__coverage__',
@@ -6008,17 +6008,17 @@
 	        decl: {
 	          start: {
 	            line: 323,
-	            column: 25
+	            column: 26
 	          },
 	          end: {
 	            line: 323,
-	            column: 26
+	            column: 27
 	          }
 	        },
 	        loc: {
 	          start: {
 	            line: 323,
-	            column: 42
+	            column: 37
 	          },
 	          end: {
 	            line: 325,
@@ -13076,7 +13076,7 @@
 	            (function (index) {
 	              cov_1iiyehkoov.f[31]++;
 	              cov_1iiyehkoov.s[178]++;
-	              castSelection[index].addEventListener('click', this.selectCast.bind(this));
+	              castSelection[index].addEventListener('click', _this4.selectCast.bind(_this4));
 	            })(i);
 	          }
 	        });

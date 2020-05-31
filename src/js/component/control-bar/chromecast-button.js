@@ -320,7 +320,7 @@ class ChromecastButton extends Button {
                     document.getElementById('chromecastModal').addEventListener('click', this.closeModalFromBack)
                     var castSelection = document.getElementsByClassName('selectCast')
                     for (var i = 0; i < castSelection.length; i++) {
-                        (function (index) {
+                        ( (index) => {
                             castSelection[index].addEventListener('click', this.selectCast.bind(this))
                         })(i)
                     }

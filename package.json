@@ -1,7 +1,7 @@
 {
   "name": "videojs-google-chromecast",
   "homepage": "https://github.com/mikadoplus/videojs-google-chromecast",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Chromecast plugin for videojs, adapted for v7.*",
   "main": "dist/videojs-google-chromecast.cjs.js",
   "module": "dist/videojs-google-chromecast.es.js",
@@ -63,15 +63,10 @@
     "test/"
   ],
   "dependencies": {
-    "chromecast-api": "github:mikadoplus/chromecast-api",
-    "castv2": "github:mikadoplus/node-castv2",
-    "castv2-client": "github:mikadoplus/node-castv2-client",
-    "multicast-dns": "github:mikadoplus/multicast-dns",
-    "node-ssdp": "github:mikadoplus/node-ssdp",
-    "chrome-dgram": "^3.0.5",
-    "dgram": "^1.0.1",
-    "tls": "0.0.1",
+    "chromecast-api": "^0.3.3",
+    "dgram-browserify": "0.0.13",
     "global": "latest",
+    "tls": "0.0.1",
     "video.js": "^7.7.6"
   },
   "devDependencies": {
@@ -121,7 +116,12 @@
     "standard": "latest",
     "videojs-generate-karma-config": "^5.3.1",
     "videojs-generate-rollup-config": "^5.0.2",
-    "videojs-standard": "^8.0.4"
+    "videojs-standard": "^8.0.4",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11"
+  },
+  "browser": {
+    "child_process": false
   },
   "eslintConfig": {
     "env": {
