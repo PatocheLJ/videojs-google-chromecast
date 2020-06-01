@@ -1,4 +1,4 @@
-/*! @name videojs-google-chromecast @version 0.1.2 @license UNLICENSED */
+/*! @name videojs-google-chromecast @version 0.1.4 @license UNLICENSED */
 'use strict';
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
@@ -370,17 +370,21 @@ var ChromecastButton = /*#__PURE__*/function (_Button) {
     }
 
     if (this.selectedDevice != null) {
-      this.setupLocalPlayer();
-      this.playerHandler.pause();
+      this.player_.pause();
       this.selectedDevice.play(this.mediaInfoMDNS, function (err) {
-        if (err) {
-          videojs.log(err);
-        } else {
-          if (c.length > 0) {
-            c[1].style.opacity = 0;
-            document.getElementsByClassName("vjs-chromecast-button-mdns")[0].classList.add("connected");
-          }
+        if (c.length > 0) {
+          c[1].style.opacity = 0;
+        }
 
+        if (err) {
+          //videojs(err)
+          _this5.closeModal(e);
+
+          _this5.casting = false;
+          document.getElementsByClassName("vjs-chromecast-button-mdns")[0].classList.add("error");
+
+          _this5.player_.play();
+        } else {
           _this5.playerHandler.load();
 
           _this5.player_.loadTech_('ChromecastTech', {
@@ -392,6 +396,7 @@ var ChromecastButton = /*#__PURE__*/function (_Button) {
           _this5.closeModal(e);
 
           _this5.casting = true;
+          document.getElementsByClassName("vjs-chromecast-button-mdns")[0].classList.add("connected");
         }
       });
     }
@@ -1439,7 +1444,7 @@ if (typeof Tech.getTech('ChromecastTech') === 'undefined') {
   Tech.registerTech('ChromecastTech', ChromecastTech);
 }
 
-var version = "0.1.2";
+var version = "0.1.4";
 
 /**
  * Google Chromecast for VideoJS

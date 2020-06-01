@@ -363,16 +363,18 @@ class ChromecastButton extends Button {
             }
         }
         if (this.selectedDevice != null) {
-            this.setupLocalPlayer()
-            this.playerHandler.pause()
+            this.player_.pause()
             this.selectedDevice.play(this.mediaInfoMDNS, (err) => {
+                if (c.length > 0) {
+                    c[1].style.opacity = 0
+                }
                 if (err) {
-                    videojs.log(err)
+                    //videojs(err)
+                    this.closeModal(e)
+                    this.casting = false
+                    document.getElementsByClassName("vjs-chromecast-button-mdns")[0].classList.add("error");
+                    this.player_.play()
                 } else {
-                    if (c.length > 0) {
-                        c[1].style.opacity = 0
-                        document.getElementsByClassName("vjs-chromecast-button-mdns")[0].classList.add("connected");
-                    }
                     this.playerHandler.load()
                     this.player_.loadTech_('ChromecastTech', {
                         type: 'cast',
@@ -381,6 +383,7 @@ class ChromecastButton extends Button {
                     });
                     this.closeModal(e)
                     this.casting = true
+                    document.getElementsByClassName("vjs-chromecast-button-mdns")[0].classList.add("connected");
                 }
             })
         }

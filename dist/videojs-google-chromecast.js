@@ -1,10 +1,10 @@
 /**
  * videojs-google-chromecast
- * @version 0.1.2
+ * @version 0.1.4
  * @copyright 2020 mikadoplus <plo@mikadoplus.lu>
  * @license UNLICENSED
  */
-/*! @name videojs-google-chromecast @version 0.1.2 @license UNLICENSED */
+/*! @name videojs-google-chromecast @version 0.1.4 @license UNLICENSED */
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('video.js/dist/alt/video.core.novtt.min')) :
   typeof define === 'function' && define.amd ? define(['video.js/dist/alt/video.core.novtt.min'], factory) :
@@ -394,17 +394,21 @@
       }
 
       if (this.selectedDevice != null) {
-        this.setupLocalPlayer();
-        this.playerHandler.pause();
+        this.player_.pause();
         this.selectedDevice.play(this.mediaInfoMDNS, function (err) {
-          if (err) {
-            videojs.log(err);
-          } else {
-            if (c.length > 0) {
-              c[1].style.opacity = 0;
-              document.getElementsByClassName("vjs-chromecast-button-mdns")[0].classList.add("connected");
-            }
+          if (c.length > 0) {
+            c[1].style.opacity = 0;
+          }
 
+          if (err) {
+            //videojs(err)
+            _this5.closeModal(e);
+
+            _this5.casting = false;
+            document.getElementsByClassName("vjs-chromecast-button-mdns")[0].classList.add("error");
+
+            _this5.player_.play();
+          } else {
             _this5.playerHandler.load();
 
             _this5.player_.loadTech_('ChromecastTech', {
@@ -416,6 +420,7 @@
             _this5.closeModal(e);
 
             _this5.casting = true;
+            document.getElementsByClassName("vjs-chromecast-button-mdns")[0].classList.add("connected");
           }
         });
       }
@@ -1463,7 +1468,7 @@
     Tech.registerTech('ChromecastTech', ChromecastTech);
   }
 
-  var version = "0.1.2";
+  var version = "0.1.4";
 
   /**
    * Google Chromecast for VideoJS

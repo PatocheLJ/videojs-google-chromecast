@@ -57,6 +57,14 @@ $icons: (
   }
 
   .vjs-chromecast-button-mdns {
+    &.error {
+      svg {
+        fill: red;
+        #cast_caf_icon_boxfill {
+          opacity: 0;
+        }
+      }
+    }
     &.connected {
       svg {
         fill: var(--color-link-active);
