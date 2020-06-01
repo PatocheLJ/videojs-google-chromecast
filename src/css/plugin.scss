@@ -18,7 +18,7 @@ $icon-font-path: 'fonts' !default;
 }
 
 $icons: (
-  chromecast: '\e901'
+        chromecast: '\e901'
 );
 
 @each $name, $content in $icons {
@@ -132,177 +132,229 @@ $icons: (
 
 //Chromecast Modal
 #chromecastModal {
-  section {
-    min-width: 250px;
+  &.modal-overlay {
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    align-items: center;
+    background-color: var(--color-background-overlay);
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    z-index: 9999;
 
-    button {
+    .modal--card-internal {
+      padding: 0;
+      border: none;
+    }
+
+    .modal {
+      background-color: var(--color-modal-background);
+      line-height: 1.55;
+      min-width: 500px;
+      max-width: var(--modal-width);
+      overflow: auto;
+      word-break: break-word;
+      position: relative;
+      border-radius: var(--card-radius);
+    }
+
+    .button--close, .content__actions .button {
+      z-index: 1;
+      position: absolute;
+      top: var(--spacing-miniscule);
+      right: var(--spacing-miniscule);
+      padding: 0.3rem;
+      transition: all var(--transition-duration) var(--transition-style);
+      border-radius: var(--card-radius);
+      color: var(--color-text);
+      font-size: var(--font-body);
       outline: none;
     }
 
-    .card__main-actions {
-      padding: 10px 0;
-      margin: 0;
+    section {
+      min-width: 250px;
 
-      .selectCast {
+      .card__header--between, .card__header--nowrap {
+        justify-content: space-between;
+        flex-wrap: wrap;
         position: relative;
-        padding: 10px var(--spacing-large);
+        display: flex;
+        align-items: flex-start;
+
+        .card__title-section {
+          display: flex;
+          align-items: flex-start;
+          padding: var(--spacing-medium) var(--spacing-large);
+        }
+      }
+
+      .card__main-actions {
+        padding: 10px 0;
         margin: 0;
-        cursor: pointer;
-        &:hover {
-          background-color: rgba(0,0,0, 0.3);
-        }
 
-        .castLoader{
-          opacity: 0;
-          zoom:1;
-          position: absolute;
-          width:16px;
-          height:16px;
-          right:10%;
-          margin:0;
-          animation: wait .80s steps(1, start) infinite;
-          background: linear-gradient(0deg, var(--color-primary) 1px, transparent 0, transparent 8px, var(--color-primary) 8px),   /* 6  */
-                      linear-gradient(90deg, var(--color-primary) 1px, var(--color-primary) 0, var(--color-primary) 3px, var(--color-primary) 3px),
-                      linear-gradient(0deg, var(--color-primary) 1px, transparent 0, transparent 8px, var(--color-primary) 8px),   /* 5  */
-                      linear-gradient(90deg, var(--color-primary) 1px, var(--color-primary) 0, var(--color-primary) 3px, var(--color-primary) 3px),
-                      linear-gradient(0deg, var(--color-primary) 1px, transparent 0, transparent 8px, var(--color-primary) 8px),   /* 4  */
-                      linear-gradient(90deg, var(--color-primary) 1px, var(--color-primary) 0, var(--color-primary) 3px, var(--color-primary) 3px),
-                      linear-gradient(0deg, var(--color-primary) 1px, transparent 0, transparent 10px, var(--color-primary) 10px), /* 3  */
-                      linear-gradient(90deg, var(--color-primary) 1px, var(--color-primary) 0, var(--color-primary) 3px, var(--color-primary) 3px),
-                      linear-gradient(0deg, var(--color-primary) 1px, transparent 0, transparent 15px, var(--color-primary) 15px), /* 2  */
-                      linear-gradient(90deg, var(--color-primary) 1px, var(--color-primary) 0, var(--color-primary) 3px, var(--color-primary) 3px),
-                      linear-gradient(0deg, var(--color-primary) 1px, transparent 0, transparent 15px, var(--color-primary) 15px), /* 1  */
-                      linear-gradient(90deg, var(--color-primary) 1px, var(--color-primary) 0, var(--color-primary) 3px, var(--color-primary) 3px);
-          background-repeat: no-repeat;
-          background-size:  4px 9px,   /* 6 */
-                            4px 9px,
-                            4px 9px,   /* 5 */
-                            4px 9px,
-                            4px 9px,   /* 4 */
-                            4px 9px,
-                            4px 11px,  /* 3 */
-                            4px 11px,
-                            4px 16px,  /* 2 */
-                            4px 16px,
-                            4px 16px,  /* 1 */
-                            4px 16px;
-          background-position: -4px 3px, -4px 3px, -4px 3px, -4px 3px,
-                               -4px 3px, -4px 3px, -4px 2px, -4px 2px,
-                               -4px 0, -4px 0, -4px 0, -4px 0;
-        }
+        .selectCast {
+          position: relative;
+          padding: 10px var(--spacing-large);
+          margin: 0;
+          cursor: pointer;
+          &:hover {
+            background-color: rgba(0, 0, 0, 0.3);
+          }
 
-        @keyframes wait{
-          12.5%{
-            background-position:  -4px,  /* 6 */
-                                  -4px,
-                                  -4px,  /* 5 */
-                                  -4px,
-                                  -4px,  /* 4 */
-                                  -4px,
-                                  -4px,  /* 3 */
-                                  -4px,
-                                  -4px,  /* 2 */
-                                  -4px,
-                                  0 ,  /* 1 */
-                                  0 ;
+          .castLoader {
+            opacity: 0;
+            zoom: 1;
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            right: 10%;
+            margin: 0;
+            animation: wait .80s steps(1, start) infinite;
+            background: linear-gradient(0deg, var(--color-primary) 1px, transparent 0, transparent 8px, var(--color-primary) 8px), /* 6  */
+            linear-gradient(90deg, var(--color-primary) 1px, var(--color-primary) 0, var(--color-primary) 3px, var(--color-primary) 3px),
+            linear-gradient(0deg, var(--color-primary) 1px, transparent 0, transparent 8px, var(--color-primary) 8px), /* 5  */
+            linear-gradient(90deg, var(--color-primary) 1px, var(--color-primary) 0, var(--color-primary) 3px, var(--color-primary) 3px),
+            linear-gradient(0deg, var(--color-primary) 1px, transparent 0, transparent 8px, var(--color-primary) 8px), /* 4  */
+            linear-gradient(90deg, var(--color-primary) 1px, var(--color-primary) 0, var(--color-primary) 3px, var(--color-primary) 3px),
+            linear-gradient(0deg, var(--color-primary) 1px, transparent 0, transparent 10px, var(--color-primary) 10px), /* 3  */
+            linear-gradient(90deg, var(--color-primary) 1px, var(--color-primary) 0, var(--color-primary) 3px, var(--color-primary) 3px),
+            linear-gradient(0deg, var(--color-primary) 1px, transparent 0, transparent 15px, var(--color-primary) 15px), /* 2  */
+            linear-gradient(90deg, var(--color-primary) 1px, var(--color-primary) 0, var(--color-primary) 3px, var(--color-primary) 3px),
+            linear-gradient(0deg, var(--color-primary) 1px, transparent 0, transparent 15px, var(--color-primary) 15px), /* 1  */
+            linear-gradient(90deg, var(--color-primary) 1px, var(--color-primary) 0, var(--color-primary) 3px, var(--color-primary) 3px);
+            background-repeat: no-repeat;
+            background-size: 4px 9px, /* 6 */
+            4px 9px,
+            4px 9px, /* 5 */
+            4px 9px,
+            4px 9px, /* 4 */
+            4px 9px,
+            4px 11px, /* 3 */
+            4px 11px,
+            4px 16px, /* 2 */
+            4px 16px,
+            4px 16px, /* 1 */
+            4px 16px;
+            background-position: -4px 3px, -4px 3px, -4px 3px, -4px 3px,
+            -4px 3px, -4px 3px, -4px 2px, -4px 2px,
+            -4px 0, -4px 0, -4px 0, -4px 0;
           }
-          25%{
-            background-position:  -4px,  /* 6 */
-                                  -4px,
-                                  -4px,  /* 5 */
-                                  -4px,
-                                  -4px,  /* 4 */
-                                  -4px,
-                                  -4px,  /* 3 */
-                                  -4px,
-                                  0,  /* 2 */
-                                  0,
-                                  6px,  /* 1 */
-                                  6px;
-          }
-          37.5%{
-            background-position:  -4px,  /* 6 */
-                                  -4px,
-                                  -4px,  /* 5 */
-                                  -4px,
-                                  -4px,  /* 4 */
-                                  -4px,
-                                  0,  /* 3 */
-                                  0,
-                                  6px,  /* 2 */
-                                  6px,
-                                  12px,  /* 1 */
-                                  12px;
-          }
-          50%{
-            background-position:  -4px,  /* 6 */
-                                  -4px,
-                                  -4px,  /* 5 */
-                                  -4px,
-                                  0,  /* 4 */
-                                  0,
-                                  6px,  /* 3 */
-                                  6px,
-                                  12px,  /* 2 */
-                                  12px,
-                                  -4px,  /* 1 */
-                                  -4px;
-          }
-          62.5%{
-            background-position:  -4px,  /* 6 */
-                                  -4px,
-                                  0,  /* 5 */
-                                  0,
-                                  6px,  /* 4 */
-                                  6px,
-                                  12px,  /* 3 */
-                                  12px,
-                                  -4px,  /* 2 */
-                                  -4px,
-                                  -4px,  /* 1 */
-                                  -4px;
-          }
-          75%{
-            background-position:  0,  /* 6 */
-                                  0,
-                                  6px,  /* 5 */
-                                  6px,
-                                  12px,  /* 4 */
-                                  12px,
-                                  -4px,  /* 3 */
-                                  -4px,
-                                  -4px,  /* 2 */
-                                  -4px,
-                                  -4px,  /* 1 */
-                                  -4px;
-          }
-          87.5%{
-            background-position:  6px,  /* 6 */
-                                  6px,
-                                  12px,  /* 5 */
-                                  12px,
-                                  -4px,  /* 4 */
-                                  -4px,
-                                  -4px,  /* 3 */
-                                  -4px,
-                                  -4px,  /* 2 */
-                                  -4px,
-                                  -4px,  /* 1 */
-                                  -4px;
-          }
-          100%{
-            background-position:  12px,  /* 6 */
-                                  12px,
-                                  -4px,  /* 5 */
-                                  -4px,
-                                  -4px,  /* 4 */
-                                  -4px,
-                                  -4px,  /* 3 */
-                                  -4px,
-                                  -4px,  /* 2 */
-                                  -4px,
-                                  -4px,  /* 1 */
-                                  -4px;
+
+          @keyframes wait {
+            12.5% {
+              background-position: -4px, /* 6 */
+              -4px,
+              -4px, /* 5 */
+              -4px,
+              -4px, /* 4 */
+              -4px,
+              -4px, /* 3 */
+              -4px,
+              -4px, /* 2 */
+              -4px,
+              0, /* 1 */
+              0;
+            }
+            25% {
+              background-position: -4px, /* 6 */
+              -4px,
+              -4px, /* 5 */
+              -4px,
+              -4px, /* 4 */
+              -4px,
+              -4px, /* 3 */
+              -4px,
+              0, /* 2 */
+              0,
+              6px, /* 1 */
+              6px;
+            }
+            37.5% {
+              background-position: -4px, /* 6 */
+              -4px,
+              -4px, /* 5 */
+              -4px,
+              -4px, /* 4 */
+              -4px,
+              0, /* 3 */
+              0,
+              6px, /* 2 */
+              6px,
+              12px, /* 1 */
+              12px;
+            }
+            50% {
+              background-position: -4px, /* 6 */
+              -4px,
+              -4px, /* 5 */
+              -4px,
+              0, /* 4 */
+              0,
+              6px, /* 3 */
+              6px,
+              12px, /* 2 */
+              12px,
+              -4px, /* 1 */
+              -4px;
+            }
+            62.5% {
+              background-position: -4px, /* 6 */
+              -4px,
+              0, /* 5 */
+              0,
+              6px, /* 4 */
+              6px,
+              12px, /* 3 */
+              12px,
+              -4px, /* 2 */
+              -4px,
+              -4px, /* 1 */
+              -4px;
+            }
+            75% {
+              background-position: 0, /* 6 */
+              0,
+              6px, /* 5 */
+              6px,
+              12px, /* 4 */
+              12px,
+              -4px, /* 3 */
+              -4px,
+              -4px, /* 2 */
+              -4px,
+              -4px, /* 1 */
+              -4px;
+            }
+            87.5% {
+              background-position: 6px, /* 6 */
+              6px,
+              12px, /* 5 */
+              12px,
+              -4px, /* 4 */
+              -4px,
+              -4px, /* 3 */
+              -4px,
+              -4px, /* 2 */
+              -4px,
+              -4px, /* 1 */
+              -4px;
+            }
+            100% {
+              background-position: 12px, /* 6 */
+              12px,
+              -4px, /* 5 */
+              -4px,
+              -4px, /* 4 */
+              -4px,
+              -4px, /* 3 */
+              -4px,
+              -4px, /* 2 */
+              -4px,
+              -4px, /* 1 */
+              -4px;
+            }
           }
         }
       }
