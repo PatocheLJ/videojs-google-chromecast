@@ -451,6 +451,10 @@ class ChromecastButton extends Button {
         }
         this.sources = source
 
+        if (this.options.url !== undefined && this.options.url !== '') {
+            this.sources.src = this.options.url
+        }
+
         return this.sources
     }
 

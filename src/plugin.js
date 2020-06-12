@@ -24,21 +24,19 @@ const chromecast = function (options) {
       player.options_.chromecast = []
     }
 
-    if (player.options_.chromecast[opt] === undefined) {
       options[opt] = ''
-    } else {
+
+    if (player.options_.chromecast[opt] !== undefined) {
       options[opt] = player.options_.chromecast[opt]
     }
   })
 
-  if (options.videojs != undefined) {
+  if (options.videojs != undefined && options.videojs != '') {
       var videojs = options.videojs;
       const ChromecastTech = require('../src/js/tech/chromecast-tech')(videojs)
-
-      var googleChromecast = new Chromecast(player, options)
-  } else {
-      var googleChromecast = new Chromecast(player, options)
   }
+
+  var googleChromecast = new Chromecast(player, options)
 }
 
 const registerPlugin = videojs.registerPlugin || videojs.plugin

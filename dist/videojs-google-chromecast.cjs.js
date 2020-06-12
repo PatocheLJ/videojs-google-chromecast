@@ -1,4 +1,4 @@
-/*! @name videojs-google-chromecast @version 0.1.4 @license UNLICENSED */
+/*! @name videojs-google-chromecast @version 0.1.5 @license UNLICENSED */
 'use strict';
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
@@ -470,6 +470,11 @@ var ChromecastButton = /*#__PURE__*/function (_Button) {
     }
 
     this.sources = source;
+
+    if (this.options.url !== undefined && this.options.url !== '') {
+      this.sources.src = this.options.url;
+    }
+
     return this.sources;
   };
 
@@ -1444,7 +1449,7 @@ if (typeof Tech.getTech('ChromecastTech') === 'undefined') {
   Tech.registerTech('ChromecastTech', ChromecastTech);
 }
 
-var version = "0.1.4";
+var version = "0.1.5";
 
 /**
  * Google Chromecast for VideoJS
@@ -1467,22 +1472,20 @@ var chromecast = function chromecast(options) {
       player.options_.chromecast = [];
     }
 
-    if (player.options_.chromecast[opt] === undefined) {
-      options[opt] = '';
-    } else {
+    options[opt] = '';
+
+    if (player.options_.chromecast[opt] !== undefined) {
       options[opt] = player.options_.chromecast[opt];
     }
   });
 
-  if (options.videojs != undefined) {
+  if (options.videojs != undefined && options.videojs != '') {
     var videojs = options.videojs;
 
     var ChromecastTech = require('../src/js/tech/chromecast-tech')(videojs);
-
-    var googleChromecast = new Chromecast(player, options);
-  } else {
-    var googleChromecast = new Chromecast(player, options);
   }
+
+  var googleChromecast = new Chromecast(player, options);
 };
 
 var registerPlugin = videojs.registerPlugin || videojs.plugin;

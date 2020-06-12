@@ -1,7 +1,7 @@
 {
   "name": "videojs-google-chromecast",
   "homepage": "https://github.com/mikadoplus/videojs-google-chromecast",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Chromecast plugin for videojs, adapted for v7.*",
   "main": "dist/videojs-google-chromecast.cjs.js",
   "module": "dist/videojs-google-chromecast.es.js",

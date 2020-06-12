@@ -163,8 +163,8 @@ $icons: (
     .button--close, .content__actions .button {
       z-index: 1;
       position: absolute;
-      top: var(--spacing-miniscule);
-      right: var(--spacing-miniscule);
+      top: var(--spacing-xxs);
+      right: var(--spacing-xxs);
       padding: 0.3rem;
       transition: all var(--transition-duration) var(--transition-style);
       border-radius: var(--card-radius);
@@ -186,7 +186,7 @@ $icons: (
         .card__title-section {
           display: flex;
           align-items: flex-start;
-          padding: var(--spacing-medium) var(--spacing-large);
+          padding: var(--spacing-m) var(--spacing-l);
         }
       }
 
@@ -196,7 +196,7 @@ $icons: (
 
         .selectCast {
           position: relative;
-          padding: 10px var(--spacing-large);
+          padding: 10px var(--spacing-l);
           margin: 0;
           cursor: pointer;
           &:hover {
