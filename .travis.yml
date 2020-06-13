@@ -1,0 +1,7 @@
+language: node_js
+cache: npm
+before_install:
+  - npm run build
+addons:
+  firefox: latest
+  chrome: stable

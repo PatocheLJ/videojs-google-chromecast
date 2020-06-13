@@ -1,4 +1,4 @@
-/*! @name videojs-google-chromecast @version 0.1.6 @license UNLICENSED */
+/*! @name videojs-google-chromecast @version 0.1.7 @license UNLICENSED */
 import videojs from 'video.js/dist/alt/video.core.novtt.min';
 import _inheritsLoose from '@babel/runtime/helpers/inheritsLoose';
 import _assertThisInitialized from '@babel/runtime/helpers/assertThisInitialized';
@@ -1445,7 +1445,7 @@ if (typeof Tech.getTech('ChromecastTech') === 'undefined') {
   Tech.registerTech('ChromecastTech', ChromecastTech);
 }
 
-var version = "0.1.6";
+var version = "0.1.7";
 
 /**
  * Google Chromecast for VideoJS
