@@ -1,4 +1,4 @@
-/*! @name videojs-google-chromecast @version 0.1.5 @license UNLICENSED */
+/*! @name videojs-google-chromecast @version 0.1.6 @license UNLICENSED */
 'use strict';
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
@@ -1449,7 +1449,7 @@ if (typeof Tech.getTech('ChromecastTech') === 'undefined') {
   Tech.registerTech('ChromecastTech', ChromecastTech);
 }
 
-var version = "0.1.5";
+var version = "0.1.6";
 
 /**
  * Google Chromecast for VideoJS

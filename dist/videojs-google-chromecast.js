@@ -1,10 +1,10 @@
 /**
  * videojs-google-chromecast
- * @version 0.1.5
+ * @version 0.1.6
  * @copyright 2020 mikadoplus <plo@mikadoplus.lu>
  * @license UNLICENSED
  */
-/*! @name videojs-google-chromecast @version 0.1.5 @license UNLICENSED */
+/*! @name videojs-google-chromecast @version 0.1.6 @license UNLICENSED */
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('video.js/dist/alt/video.core.novtt.min')) :
   typeof define === 'function' && define.amd ? define(['video.js/dist/alt/video.core.novtt.min'], factory) :
@@ -1473,7 +1473,7 @@
     Tech.registerTech('ChromecastTech', ChromecastTech);
   }
 
-  var version = "0.1.5";
+  var version = "0.1.6";
 
   /**
    * Google Chromecast for VideoJS
