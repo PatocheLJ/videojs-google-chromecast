@@ -1,3 +1,15 @@
+<p align="center">
+<a href="https://npmjs.org/package/videojs-google-chromecast">
+<img src="https://img.shields.io/npm/v/videojs-google-chromecast.svg" alt="">
+</a> 
+<a href="https://travis-ci.org/mikadoplus/videojs-google-chromecast.js">
+<img src="https://travis-ci.org/mikadoplus/videojs-google-chromecast.svg?branch=master" alt="">
+</a> 
+<a href="https://npmjs.org/package/videojs-google-chromecast">
+<img src="https://img.shields.io/npm/dm/videojs-google-chromecast.svg" alt="">
+</a>
+</p>
+
 # videojs-google-chromecast
 
 Chromecast plugin for videojs, adapted for v7.*
