@@ -12,7 +12,7 @@
 
 # videojs-google-chromecast
 
-Chromecast plugin for videojs, adapted for v7.*
+Chromecast plugin for videojs, adapted for v7.*. The plugin also has a way to play videojs on Google Chromecast in any Webapp (Electron...).
 
 ## Table of Contents
 
