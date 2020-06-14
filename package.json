@@ -1,8 +1,8 @@
 {
   "name": "videojs-google-chromecast",
   "homepage": "https://github.com/mikadoplus/videojs-google-chromecast",
-  "version": "0.1.7",
-  "description": "Chromecast plugin for videojs, adapted for v7.*",
+  "version": "0.1.8",
+  "description": "Chromecast plugin for videojs, adapted for v7.*. The plugin also has a way to play videojs on Google Chromecast in any Webapp (Electron...).",
   "main": "dist/videojs-google-chromecast.cjs.js",
   "module": "dist/videojs-google-chromecast.es.js",
   "generator-videojs-plugin": {
